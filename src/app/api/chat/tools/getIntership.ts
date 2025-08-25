@@ -18,7 +18,7 @@ export const getInternship = tool({
   - Led **Jurassic Rescue Robot** under strict hardware constraints (MREN 303), plus multiple embedded/IoT builds
   - 2+ years tutoring university STEM (calc, data structures, architecture) and leadership as a Residence Don
 
-- 🛂 **Work authorization**: Based in **Canada**; **may require U.S. visa sponsorship** for roles in the United States
+- 🛂 **Work authorization**: Based in **Canada** on a student visa; **may require U.S. visa sponsorship** for roles in the United States
 
 📬 **Contact**
 - Email: **mousapir@gmail.com**
