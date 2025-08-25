@@ -1,13 +1,21 @@
 
-import { tool } from "ai";
-import { z } from "zod";
-
+import { tool } from 'ai';
+import { z } from 'zod';
 
 export const getCrazy = tool({
   description:
-    "This tool will the craziest thing I've ever done. use it when the user ask someting like : 'What the craziest thing you've ever done?'",
+    "Shares Mousa's esports background: League of Legends Masters rank and Queen’s University Esports experience.",
   parameters: z.object({}),
   execute: async () => {
-    return "Above is a photo of Me On top of Mont Blanc, the highest mountain in the Alps and the highest in Europe. I made it with a friends of mine without guide, it was a great experience! You can see the 80km/h of wind on the photo! I made a youtube video of this adventure here: https://www.youtube.com/watch?v=rufGMSgzUOk&ab_channel=Toukoum";
+    return `Esports? That’s my playground 🎮
+
+- 🏆 **Rank**: **Masters** (solo queue, NA)
+- 🏫 **Team**: **Queen’s University Esports** — **3 seasons** on the League of Legends roster
+- 🎯 **Role**: Mid, ADC
+- 🧠 **Strengths**: shotcalling, macro, drafts, tilt control
+- ❤️ **Champs**: Akali, Katarina, Yone, Zed, Lucian
+- ✍️ **What it taught me**: communication under pressure, iteration, reading opponents, and staying calm when everything’s on fire
+
+Got a favorite comp or champ synergy you swear by?`;
   },
 });
