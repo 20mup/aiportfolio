@@ -1,22 +1,24 @@
 'use client';
 
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import React from 'react';
 
 export function Presentation() {
   // Personal information
   const profile = {
-    name: 'Raphael Giraud',
-    age: '21 years old',
-    location: 'Paris, France',
-    // Add a newline character after the emoji
+    name: 'Mousa Pirzada',
+    age: 'Mechatronics & Robotics (Queen’s)',
+    location: 'Toronto, Canada',
     description:
-      "Hey 👋\nI'm Raph also known as Toukoum. I'm a developer specializing in AI at 42 Paris. I'm working at LightOn AI in Paris. I'm passionate about AI, tech, Entrepreneurship and SaaS tech.",
-    src: '/profil-raph.png',
+      "Hey 👋\nI’m Mousa. I build voice-AI, embedded systems, and robots that actually ship.\nRecent wins: AIVA (Systems Limited), NoteBuddy (Creekwood Dental), and the Jurassic Rescue Robot.",
+    src: '/profil-mousa.png',
     fallbackSrc:
-      'https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3',
+      'https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=1200&auto=format&fit=crop',
   };
+
+  // Use state so Next/Image can swap to a fallback on error
+  const [imgSrc, setImgSrc] = useState(profile.src);
 
   // Animation variants for text elements
   const textVariants = {
@@ -28,24 +30,30 @@ export function Presentation() {
     },
   };
 
-  // Animation for the entire paragraph rather than word-by-word
   const paragraphAnimation = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut',
-        delay: 0.2,
-      },
+      transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 },
     },
   };
+
+  const tags = [
+    'AI & Robotics',
+    'LangChain • Whisper',
+    'Embedded (Pico/ESP32/Arduino)',
+    'Python • C++ • TS',
+    'Streamlit • Flask • Next.js',
+    'Supabase • FAISS',
+    'Systems Limited',
+    'Creekwood Dental',
+  ];
 
   return (
     <div className="mx-auto w-full max-w-5xl py-6 font-sans">
       <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
-        {/* Image section */}
+        {/* Image */}
         <div className="relative mx-auto aspect-square w-full max-w-sm">
           <div className="relative h-full w-full overflow-hidden rounded-2xl">
             <motion.div
@@ -55,28 +63,21 @@ export function Presentation() {
               className="h-full w-full"
             >
               <Image
-                src={profile.src}
+                src={imgSrc}
                 alt={profile.name}
-                width={500}
-                height={500}
+                width={800}
+                height={800}
+                priority
                 className="h-full w-full object-cover object-center"
-                onError={(e) => {
-                  // Fallback to placeholder if image fails to load
-                  const target = e.target as HTMLImageElement;
-                  target.src = profile.fallbackSrc;
-                }}
+                onError={() => setImgSrc(profile.fallbackSrc)}
               />
             </motion.div>
           </div>
         </div>
 
-        {/* Text content section */}
-        <div className="flex flex-col space-y">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={textVariants}
-          >
+        {/* Text */}
+        <div className="flex flex-col">
+          <motion.div initial="hidden" animate="visible" variants={textVariants}>
             <h1 className="from-foreground to-muted-foreground bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent md:text-3xl">
               {profile.name}
             </h1>
@@ -91,28 +92,26 @@ export function Presentation() {
             initial="hidden"
             animate="visible"
             variants={paragraphAnimation}
-            className="text-foreground mt-6 leading-relaxed whitespace-pre-line"
+            className="text-foreground mt-6 whitespace-pre-line leading-relaxed"
           >
             {profile.description}
           </motion.p>
 
-          {/* Tags/Keywords */}
+          {/* Tags */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.5 }}
             className="mt-4 flex flex-wrap gap-2"
           >
-            {['AI', 'Developer', '42 Paris', 'Sport', 'SaaS Builder'].map(
-              (tag) => (
-                <span
-                  key={tag}
-                  className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm"
-                >
-                  {tag}
-                </span>
-              )
-            )}
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm"
+              >
+                {tag}
+              </span>
+            ))}
           </motion.div>
         </div>
       </div>

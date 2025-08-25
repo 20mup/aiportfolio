@@ -3,80 +3,89 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { Code, Cpu, PenTool, Users } from 'lucide-react';
+import { Cpu, Code2, Wrench, PenTool, Users, Bot } from 'lucide-react';
 
 const Skills = () => {
   const skillsData = [
     {
-      category: 'Frontend Development',
-      icon: <Code className="h-5 w-5" />,
+      category: 'AI / LLM Engineering',
+      icon: <Bot className="h-5 w-5" />,
       skills: [
-        'HTML',
-        'CSS',
-        'JavaScript/TypeScript',
-        'Tailwind CSS',
-        'Bootstrap',
-        'Next.js',
-        'React',
-        'Vercel AI SDK',
-        'Gsap',
+        'OpenAI (GPT, Whisper)',
+        'LangChain',
+        'RAG (FAISS/Chroma)',
+        'Agents & Tool Calling',
+        'Vector Search',
+        'ElevenLabs (TTS)',
+        'Prompt Engineering',
       ],
-      color: 'bg-blue-50 text-blue-600 border border-blue-200',
+      color: 'bg-purple-50 text-purple-700 border border-purple-200 dark:bg-purple-950/30 dark:text-purple-300 dark:border-purple-900',
     },
     {
-      category: 'Backend & Systems',
+      category: 'Embedded & Robotics',
       icon: <Cpu className="h-5 w-5" />,
       skills: [
-        'Unix',
-        'C',
-        'C++',
-        'Python',
-        'Typescript',
-        'Git',
-        'GitHub',
-        'Docker',
-        'GCP',
-        'PostgreSQL',
+        'Raspberry Pi Pico (MicroPython)',
+        'ESP32 / Arduino (C/C++)',
+        'GPIO / PWM / UART / I²C / SPI',
+        'Servo Kinematics',
+        'Sensors & Actuators',
+        'Rapid Prototyping',
       ],
-      color: 'bg-emerald-50 text-emerald-600 border border-emerald-200',
+      color: 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-300 dark:border-emerald-900',
     },
     {
-      category: 'Design & Creative Tools',
+      category: 'Apps & Web',
+      icon: <Code2 className="h-5 w-5" />,
+      skills: [
+        'Python',
+        'Flask / FastAPI',
+        'Streamlit',
+        'React / Next.js',
+        'TypeScript / JavaScript',
+        'Tailwind CSS',
+        'Tkinter (desktop)',
+        'PyInstaller (packaging)',
+      ],
+      color: 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-950/30 dark:text-blue-300 dark:border-blue-900',
+    },
+    {
+      category: 'Data, Cloud & Tools',
+      icon: <Wrench className="h-5 w-5" />,
+      skills: [
+        'Supabase / PostgreSQL',
+        'Git & GitHub',
+        'Docker (basics)',
+        'AWS (S3/EC2 basics)',
+        'CI/CD (GitHub Actions)',
+      ],
+      color: 'bg-cyan-50 text-cyan-700 border border-cyan-200 dark:bg-cyan-950/30 dark:text-cyan-300 dark:border-cyan-900',
+    },
+    {
+      category: 'Design & CAD',
       icon: <PenTool className="h-5 w-5" />,
-      skills: ['Figma', 'Davinci Code', 'Illustrator', 'Canva', 'Keynote'],
-      color: 'bg-indigo-50 text-indigo-600 border border-indigo-200',
+      skills: [
+        'Figma',
+        'SolidWorks',
+        'AutoCAD',
+        'DaVinci Resolve',
+        'Canva',
+        'Markdown/Jekyll',
+      ],
+      color: 'bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-950/30 dark:text-indigo-300 dark:border-indigo-900',
     },
     {
       category: 'Soft Skills',
       icon: <Users className="h-5 w-5" />,
       skills: [
+        'Leadership (Residence Don)',
+        'Mentoring & Tutoring',
+        'Problem Solving',
         'Communication',
-        'Problem-Solving',
-        'Adaptability',
-        'Learning Agility',
-        'Teamwork',
+        'Time Management',
         'Creativity',
-        'Focus',
       ],
-      color: 'bg-amber-50 text-amber-600 border border-amber-200',
-    },
-    {
-      category: 'AI & Fullstack Engineering',
-      icon: <Cpu className="h-5 w-5" />,
-      skills: [
-        'LLM Providers (ChatGPT, Whisper, Groq, Mistral & Claude)',
-        'AI Agents',
-        'Prompt engineering',
-        'Vector databases (Weaviate, Pinecone)',
-        'RAG (Retrieval-Augmented Generation)',
-        'Tool routing & calling',
-        'Hugging Face Transformers',
-        'Vercel AI SDK',
-        'Supabase',
-        'Prisma',
-        'Next.js',
-      ],
-      color: 'bg-purple-50 text-purple-600 border border-purple-200',
+      color: 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950/30 dark:text-amber-300 dark:border-amber-900',
     },
   ];
 
@@ -85,9 +94,7 @@ const Skills = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.08 },
     },
   };
 
@@ -96,7 +103,7 @@ const Skills = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: [0.19, 1, 0.22, 1] },
+      transition: { duration: 0.45, ease: [0.19, 1, 0.22, 1] },
     },
   };
 
@@ -105,7 +112,7 @@ const Skills = () => {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.3, ease: 'easeOut' },
+      transition: { duration: 0.25, ease: 'easeOut' },
     },
   };
 
@@ -131,11 +138,7 @@ const Skills = () => {
             animate="visible"
           >
             {skillsData.map((section, index) => (
-              <motion.div
-                key={index}
-                className="space-y-3 px-0"
-                variants={itemVariants}
-              >
+              <motion.div key={index} className="space-y-3 px-0" variants={itemVariants}>
                 <div className="flex items-center gap-2">
                   {section.icon}
                   <h3 className="text-accent-foreground text-lg font-semibold">
@@ -150,15 +153,8 @@ const Skills = () => {
                   animate="visible"
                 >
                   {section.skills.map((skill, idx) => (
-                    <motion.div
-                      key={idx}
-                      variants={badgeVariants}
-                      whileHover={{
-                        scale: 1.04,
-                        transition: { duration: 0.2 },
-                      }}
-                    >
-                      <Badge className={`border px-3 py-1.5 font-normal`}>
+                    <motion.div key={idx} variants={badgeVariants} whileHover={{ scale: 1.04, transition: { duration: 0.2 } }}>
+                      <Badge className={`border px-3 py-1.5 font-normal ${section.color}`}>
                         {skill}
                       </Badge>
                     </motion.div>

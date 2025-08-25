@@ -13,52 +13,44 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Toukoum Portfolio",
-  description: "Interactive portfolio with an AI-powered Memoji that answers questions about me, my skills, and my experience",
+  title: "Mousa Pirzada — AI & Robotics Portfolio",
+  description:
+    "Interactive portfolio showcasing AIVA, NoteBuddy, and the Jurassic Rescue Robot — voice-AI, embedded systems, and robotics.",
   keywords: [
-    "Toukoum", 
-    "Portfolio", 
-    "Developer", 
-    "AI", 
-    "Interactive", 
-    "Memoji", 
-    "Web Development",
-    "Full Stack",
+    "Mousa Pirzada",
+    "Portfolio",
+    "AI",
+    "Robotics",
+    "Embedded Systems",
     "Next.js",
-    "React"
+    "React",
   ],
-  authors: [
-    {
-      name: "Toukoum",
-      url: "https://toukoum.fr",
-    },
-  ],
-  creator: "Toukoum",
+  authors: [{ name: "Mousa Pirzada", url: "https://github.com/20mup" }],
+  creator: "Mousa Pirzada",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://toukoum.fr",
-    title: "Toukoum Portfolio",
-    description: "Interactive portfolio with an AI-powered Memoji that answers questions about me",
-    siteName: "Toukoum Portfolio",
+    url: "https://<your-vercel-domain>", // update after deploy
+    title: "Mousa Pirzada — AI & Robotics Portfolio",
+    description:
+      "I build voice-AI and robotics that ship. AIVA, NoteBuddy, Jurassic Rescue Robot.",
+    siteName: "Mousa Pirzada — Portfolio",
+    // images: ["/og.png"], // optional: add later
   },
   twitter: {
     card: "summary_large_image",
-    title: "Toukoum Portfolio",
-    description: "Interactive portfolio with an AI-powered Memoji that answers questions about me",
-    creator: "@toukoum",
+    title: "Mousa Pirzada — AI & Robotics Portfolio",
+    description:
+      "I build voice-AI and robotics that ship. AIVA, NoteBuddy, Jurassic Rescue Robot.",
+    creator: "@mousa", // or your handle
   },
   icons: {
-    icon: [
-      {
-        url: "/favicon.svg",
-        sizes: "any",
-      }
-    ],
+    icon: [{ url: "/favicon.svg", sizes: "any" }],
     shortcut: "/favicon.svg?v=2",
-    apple: "/apple-touch-icon.svg?v=2",
+    apple: "/apple-touch-icon.png?v=2",
   },
 };
+
 
 export default function RootLayout({
   children,

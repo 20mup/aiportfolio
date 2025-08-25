@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 const InternshipCard = () => {
   const openMail = () => {
-    window.open('mailto:raphaelgiraud12@gmail.com', '_blank');
+    window.open('mailto:mousapir@gmail.com', '_blank');
   };
   const router = useRouter();
 

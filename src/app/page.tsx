@@ -84,12 +84,7 @@ export default function Home() {
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pb-10 md:pb-20">
       {/* big blurred footer word */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center overflow-hidden">
-        <div
-          className="hidden bg-gradient-to-b from-neutral-500/10 to-neutral-500/0 bg-clip-text text-[10rem] leading-none font-black text-transparent select-none sm:block lg:text-[16rem]"
-          style={{ marginBottom: '-2.5rem' }}
-        >
-          Toukoum
-        </div>
+        Mousa
       </div>
 
       {/* GitHub button */}
@@ -99,13 +94,13 @@ export default function Home() {
           animationDuration={1.5}
           label="Star"
           size={'sm'}
-          repoUrl="https://github.com/toukoum/portfolio"
+          repoUrl="https://github.com/20mup/aiportfolio"
         />
       </div>
 
       <div className="absolute top-6 left-6 z-20">
         <button
-          onClick={() => goToChat('Are you looking for an internship?')}
+          onClick={() => goToChat('Are you hiring an AI/Robotics intern?')}
           className="relative flex cursor-pointer items-center gap-2 rounded-full border bg-white/30 px-4 py-1.5 text-sm font-medium text-black shadow-md backdrop-blur-lg transition hover:bg-white/60 dark:border-white dark:text-white dark:hover:bg-neutral-800"
         >
           {/* Green pulse dot */}
@@ -113,7 +108,7 @@ export default function Home() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
             <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
           </span>
-          Looking for a talent?
+          Looking for talent?
         </button>
       </div>
 
@@ -129,22 +124,25 @@ export default function Home() {
         </div>
 
         <h2 className="text-secondary-foreground mt-1 text-xl font-semibold md:text-2xl">
-          Hey, I'm Raphael 👋
+          Hey, I'm Mousa 👋
         </h2>
-        <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">
-          AI Portfolio
+        <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl">
+          AI & robotics that matter
         </h1>
+        <p className="mt-4 text-lg text-gray-400">
+          AIVA (Systems Limited) • NoteBuddy (Creekwood Dental) • Autonomous Pet Feeder (Queen’s) • Jurassic Rescue Robot (Queen’s)
+        </p>
       </motion.div>
 
       {/* centre memoji */}
       <div className="relative z-10 h-52 w-48 overflow-hidden sm:h-72 sm:w-72">
         <Image
           src="/landing-memojis.png"
-          alt="Hero memoji"
+          alt="Mousa memoji"
           width={2000}
           height={2000}
           priority
-          className="translate-y-14 scale-[2] object-cover"
+          className="w-full h-auto object-contain"
         />
       </div>
 

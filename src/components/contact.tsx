@@ -7,13 +7,13 @@ import { ChevronRight } from 'lucide-react';
 export function Contact() {
   // Contact information
   const contactInfo = {
-    name: 'Raphael Giraud',
-    email: 'raphaelgiraud12@gmail.com',
+    name: 'Mousa Pirzada',
+    email: 'mousapir@gmail.com',
     handle: '@Raphael.Giraud',
     socials: [
       {
         name: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/raphael-giraud-60939519a/',
+        url: 'https://www.linkedin.com/in/mousa-pirzada/',
       },
       {
         name: 'Youtube',
@@ -29,7 +29,7 @@ export function Contact() {
       },
       {
         name: 'Github',
-        url: 'https://github.com/toukoum',
+        url: 'https://github.com/20mup',
       },
       {
         name: 'X',

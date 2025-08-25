@@ -3,55 +3,43 @@
 import React from 'react';
 import { Photos, PhotoItem } from './photos';
 
-const Sports = () => {
-  const sportPhotos: PhotoItem[] = [
+const Esports = () => {
+  const esportPhotos: PhotoItem[] = [
     {
-      src: '/podium.jpg',
-      alt: 'On the podium after a mountain bike race',
-      caption: 'Celebrating a podium finish 3rd at the famous Roc d\'Azur',
+      src: '/queens-team.jpg',
+      alt: 'Queen’s University Esports Team',
+      caption: "Competed for 3 years with Queen’s University’s official League of Legends team",
     },
     {
-      src: '/levens.JPG',
-      alt: 'Racing in Levens',
-      caption: 'Competing in the mountain bike world cup in Levens with some clean conditions ahah',
+      src: '/league-masters.png',
+      alt: 'League of Legends Masters Rank',
+      caption: 'Achieved Masters rank — top ~1% of players in North America',
     },
     {
-      src: '/marseille.JPG',
-      alt: 'Racing in Marseille',
-      caption: 'Pushing limits at the Marseille World cup',
+      src: '/tournament.jpg',
+      alt: 'LAN Tournament',
+      caption: 'On stage and online, esports built my teamwork, strategy, and adaptability',
     },
-    {
-      src: '/transmo.JPG',
-      alt: 'Racing in the Transmaurienne',
-      caption: 'On the start line for the Transmaurienne Race in the french Alps',
-    },
-    {
-      src: '/ploeuc.jpg',
-      alt: 'Racing in the World Cup',
-      caption: 'French championship in Ploeuc',
-    },
-    {
-      src: '/gueret.jpg',
-      alt: 'Racing in the World Cup',
-      caption: 'World cup in Gueret',
-    }
   ];
 
   return (
     <div className="mx-auto w-full">
       <div className="mb-8">
         <h2 className="text-foreground text-3xl font-semibold md:text-4xl">
-          My Sporting Career
+          My Esports Journey
         </h2>
         <p className="mt-4 text-muted-foreground">
-          Before focusing on development, I competed at a high level in mountain biking, 
-          reaching Top 15 in the Junior World Cup and Top 10 in French Cup. Here are some highlights from my 
-          athletic journey.
+          Alongside engineering and AI, I’ve competed in esports for several years. 
+          I represented <strong>Queen’s University Esports</strong> in League of Legends 
+          for 3 seasons, reaching <strong>Masters</strong> rank in solo queue — 
+          placing me among the top 1% of players in North America. 
+          Esports taught me discipline, communication, and strategy, 
+          which I now apply to both engineering and life.
         </p>
       </div>
-      <Photos photos={sportPhotos} />
+      <Photos photos={esportPhotos} />
     </div>
   );
 };
 
-export default Sports;
+export default Esports;

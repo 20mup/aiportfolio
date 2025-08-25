@@ -3,12 +3,12 @@ import { z } from 'zod';
 
 export const getPresentation = tool({
   description:
-    'This tool returns a concise personal introduction of Raphael Giraud. It is used to answer the question "Who are you?" or "Tell me about yourself"',
+    'This tool returns a concise personal introduction of Mousa Pirzada. It is used to answer the question "Who are you?" or "Tell me about yourself".',
   parameters: z.object({}),
   execute: async () => {
     return {
       presentation:
-        "I'm Raphael Giraud, a 21-year-old developer specializing in AI at 42 Paris. Formerly a high-level mountain biker, I now intern at LightOn AI in Paris. I'm passionate about AI, tech, Entrepreneurship and SaaS tech.",
+        "I'm Mousa Pirzada, a Mechatronics & Robotics Engineering student at Queen’s University. I specialize in AI applications, embedded systems, and robotics. I’ve built projects like AIVA (an AI Voice Assistant), NoteBuddy (voice-to-notes app for dentists), and the Jurassic Rescue Robot. I'm passionate about creating AI-driven tools, real-world robotics, and solving problems with tech.",
     };
   },
 });
