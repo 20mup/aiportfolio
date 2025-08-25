@@ -256,9 +256,10 @@ export default function HelperBoost({ submitQuery, setInput }: HelperBoostProps)
 interface CategorySectionProps {
   name: string;
   Icon: React.ElementType;
-  questions: string[];
+  questions: readonly string[]; // <-- change here
   onQuestionClick: (question: string) => void;
 }
+
 
 function CategorySection({ name, Icon, questions, onQuestionClick }: CategorySectionProps) {
   return (
