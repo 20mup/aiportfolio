@@ -9,137 +9,144 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { motion } from 'framer-motion';
-import { X } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation'; // Importation correcte pour Next.js 13+
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-// Added a trigger prop to accept custom triggers
 interface WelcomeModalProps {
   trigger?: React.ReactNode;
 }
 
 export default function WelcomeModal({ trigger }: WelcomeModalProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter(); // Initialisation du router avec useRouter
+  const router = useRouter();
 
-  // Default trigger is the logo
   const defaultTrigger = (
     <Button
       variant="ghost"
-      className="h-auto w-auto cursor-pointer rounded-2xl bg-white/30 p-3 shadow-lg backdrop-blur-lg hover:bg-white/60 focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+      className="h-auto w-auto cursor-pointer rounded-2xl bg-white p-3 shadow-lg ring-1 ring-black/10 backdrop-blur-lg hover:bg-white/90 focus-visible:ring-0"
       onClick={() => setIsOpen(true)}
+      aria-label="Open portfolio intro"
     >
       <Image
-        src="/logo-toukoum.svg"
-        width={100}
-        height={100}
-        alt="Logo"
-        className="w-6 md:w-8"
+        src="/MP-logo-blackwhite.png"
+        width={24}
+        height={24}
+        alt="MP logo"
+        priority
       />
-      <span className="sr-only">About Toukoum</span>
+      <span className="sr-only">Open intro</span>
     </Button>
   );
 
-  // Fonction qui utilise window.location pour forcer un rechargement complet
-  const handleContactMe = () => {
+  const go = (q: string) => {
     setIsOpen(false);
-    // Forcer un rechargement complet de la page avec la requête
-    window.location.href = '/chat?query=How%20can%20I%20contact%20you%3F';
+    router.push(`/chat?query=${encodeURIComponent(q)}`);
   };
 
   return (
     <>
-      {/* Use custom trigger if provided, otherwise use default */}
-      {trigger ? (
-        <div onClick={() => setIsOpen(true)}>{trigger}</div>
-      ) : (
-        defaultTrigger
-      )}
+      {trigger ? <div onClick={() => setIsOpen(true)}>{trigger}</div> : defaultTrigger}
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="bg-background z-52 max-h-[85vh] overflow-auto rounded-2xl border-none p-4 py-6 shadow-xl sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[1000px]">
+        <DialogContent className="bg-background z-52 max-h-[85vh] overflow-auto rounded-2xl border-none p-0 shadow-xl sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[1000px]">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
             className="flex h-full flex-col"
           >
             {/* Header */}
-            <DialogHeader className="relative flex flex-row items-start justify-between px-8 pt-8 pb-6">
-              <div>
-                <DialogTitle className="flex items-center gap-2 text-4xl font-bold tracking-tight">
-                  Welcome to AI Portfolio
-                </DialogTitle>
-                <DialogDescription className="mt-2 text-base">
-                  {/*My interactive AI portfolio experience*/}
-                </DialogDescription>
+            <DialogHeader className="relative flex flex-row items-start justify-between px-6 pt-6 pb-4 md:px-8 md:pt-8">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white shadow-md ring-1 ring-black/10">
+                  <Image src="/MP-logo-blackwhite.png" alt="MP" width={22} height={22} />
+                </div>
+                <div>
+                  <DialogTitle className="text-2xl font-bold tracking-tight md:text-3xl">
+                    Welcome to Mousa’s AI Portfolio
+                  </DialogTitle>
+                  <DialogDescription className="mt-1 text-sm">
+                    Ask me anything — projects, skills, context, or contact details.
+                  </DialogDescription>
+                </div>
               </div>
+
               <Button
                 variant="ghost"
                 size="icon"
-                className="sticky top-0 right-0 cursor-pointer rounded-full bg-black p-2 text-white hover:bg-black/90 hover:text-white"
+                className="sticky top-4 right-4 mr-2 mt-1 rounded-full bg-black p-2 text-white hover:bg-black/90"
                 onClick={() => setIsOpen(false)}
+                aria-label="Close"
               >
-                <X className="h-6 w-6" />
-                <span className="sr-only">Close</span>
+                ✕
               </Button>
             </DialogHeader>
 
-            {/* Content area */}
-            <div className="space-y-6 overflow-y-auto px-2 py-4 md:px-8">
-              <section className="bg-accent w-full space-y-8 rounded-2xl p-8">
-                {/* What section */}
-                <div className="space-y-3">
-                  <h3 className="text-primary flex items-center gap-2 text-xl font-semibold">
-                    What's ????
-                  </h3>
-                  <p className="text-accent-foreground text-base leading-relaxed">
-                    I'm so excited to present my{' '}
-                    <strong>brand new AI Portfolio.</strong>
-                    <br /> Whether you're a recruiter, a friend, family member,
-                    or just curious, feel free to ask anything you want!
-                  </p>
+            {/* Body */}
+            <div className="space-y-6 px-6 pb-6 md:px-8">
+              <section className="w-full space-y-8 rounded-2xl border bg-accent/30 p-6 md:p-8">
+                <div className="grid gap-6 md:grid-cols-2">
+                  {/* What */}
+                  <div className="space-y-2">
+                    <h3 className="text-primary text-lg font-semibold">What is this?</h3>
+                    <p className="text-accent-foreground leading-relaxed">
+                      An interactive portfolio that answers your questions with context.
+                      Explore <strong>AIVA</strong>, <strong>NoteBuddy</strong>, the
+                      <strong> Autonomous Pet Feeder</strong>, and the
+                      <strong> Jurassic Rescue Robot</strong>.
+                    </p>
+                  </div>
+
+                  {/* Why */}
+                  <div className="space-y-2">
+                    <h3 className="text-primary text-lg font-semibold">Why this format?</h3>
+                    <p className="text-accent-foreground leading-relaxed">
+                      Static pages can’t adapt. This chat lets you jump straight to what you
+                      care about: specific project details, design decisions, code, or impact.
+                    </p>
+                  </div>
                 </div>
 
-                {/* Why section */}
-                <div className="space-y-3">
-                  <h3 className="text-primary flex items-center gap-2 text-xl font-semibold">
-                    Why ???
-                  </h3>
-                  <p className="text-accent-foreground text-base leading-relaxed">
-                    Traditional portfolios can be limiting. <br /> They can't
-                    adapt to every visitor's specific needs. <br /> My portfolio
-                    becomes{' '}
-                    <strong>
-                      exactly what you're interested in knowing about me and my
-                      work.
-                    </strong>
-                  </p>
+                {/* Quick actions */}
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  <Button variant="outline" className="rounded-xl" onClick={() => go("Who are you? I want to know more about you.")}>
+                    Me
+                  </Button>
+                  <Button variant="outline" className="rounded-xl" onClick={() => go("What are your projects? What are you working on right now?")}>
+                    Projects
+                  </Button>
+                  <Button variant="outline" className="rounded-xl" onClick={() => go("What are your skills? Give me a list of your soft and hard skills.")}>
+                    Skills
+                  </Button>
+                  <Button variant="outline" className="rounded-xl" onClick={() => go("How can I contact you?")}>
+                    Contact
+                  </Button>
                 </div>
               </section>
+
+              {/* Links */}
+              <div className="grid gap-3 sm:grid-cols-2">
+                <a className="rounded-xl border p-4 hover:bg-accent/30" href="/#projects">
+                  View Projects
+                </a>
+                <a className="rounded-xl border p-4 hover:bg-accent/30" href="/resume.pdf">
+                  Download Resume
+                </a>
+              </div>
             </div>
 
-            {/* Footer */}
-            <div className="flex flex-col items-center px-8 pt-4 pb-0 md:pb-8">
-              <Button
-                onClick={() => setIsOpen(false)}
-                className="h-auto rounded-full px-4 py-3"
-                size="sm"
-              >
+            {/* Footer CTA */}
+            <div className="flex flex-col items-center gap-2 px-6 pb-6 md:px-8">
+              <Button onClick={() => setIsOpen(false)} className="h-auto rounded-full px-5 py-3">
                 Start Chatting
               </Button>
-              <div
-                className="mt-6 flex cursor-pointer flex-wrap gap-1 text-center text-sm"
-                onClick={handleContactMe}
+              <button
+                className="text-sm text-blue-600 hover:underline"
+                onClick={() => go('How can I contact you?')}
               >
-                <p className="text-muted-foreground">
-                  If you love it, please share it! Feedback is always welcome.
-                </p>
-                <div className="flex cursor-pointer items-center text-blue-500 hover:underline">
-                  Contact me.
-                </div>
-              </div>
+                Contact me
+              </button>
             </div>
           </motion.div>
         </DialogContent>

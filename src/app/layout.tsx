@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     url: "https://<your-vercel-domain>", // update after deploy
     title: "Mousa Pirzada — AI & Robotics Portfolio",
     description:
-      "I build voice-AI and robotics that ship. AIVA, NoteBuddy, Jurassic Rescue Robot.",
+      "I build voice-AI and robotics that matter. AIVA, NoteBuddy, Autonomous Pet Feeder, Jurassic Rescue Robot.",
     siteName: "Mousa Pirzada — Portfolio",
     // images: ["/og.png"], // optional: add later
   },
@@ -41,13 +41,13 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Mousa Pirzada — AI & Robotics Portfolio",
     description:
-      "I build voice-AI and robotics that ship. AIVA, NoteBuddy, Jurassic Rescue Robot.",
+      "I build voice-AI and robotics that matter. AIVA, NoteBuddy, Autonomous Pet Feeder, Jurassic Rescue Robot.",
     creator: "@mousa", // or your handle
   },
   icons: {
-    icon: [{ url: "/favicon.svg", sizes: "any" }],
-    shortcut: "/favicon.svg?v=2",
-    apple: "/apple-touch-icon.png?v=2",
+    icon: [{ url: "/MP-logo-blackwhite.png", sizes: "any" }],
+    shortcut: "MP-logo-blackwhite.png",
+    apple: "MP-logo-blackwhite.png",
   },
 };
 
