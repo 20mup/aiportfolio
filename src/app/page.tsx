@@ -2,7 +2,7 @@
 
 import FluidCursor from '@/components/FluidCursor';
 import { Button } from '@/components/ui/button';
-import ResumeButton from '@/components/ui/resume-button';
+import ResumePill from '@/components/ui/resume-pill';
 import WelcomeModal from '@/components/welcome-modal';
 import { motion } from 'framer-motion';
 import {
@@ -81,14 +81,10 @@ export default function Home() {
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pb-10 md:pb-20">
-      {/* big blurred footer word */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center overflow-hidden">
-        Mousa
-      </div>
 
-      {/* Resume button */}
+      {/* Resume pill */}
       <div className="absolute top-6 right-8 z-20">
-        <ResumeButton
+        <ResumePill
           href="/mousa_resume.pdf"        // put your resume path here
           subtitle="Updated Mar 2025"      // optional
         />
@@ -125,7 +121,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl">
           AI & robotics that matter
         </h1>
-        <p className="mt-4 text-lg text-gray-400">
+        <p className="mt-2 text-md text-gray-400">
           AIVA (Systems Limited) • NoteBuddy (Creekwood Dental) • Autonomous Pet Feeder (Queen’s) • Jurassic Rescue Robot (Queen’s)
         </p>
       </motion.div>
