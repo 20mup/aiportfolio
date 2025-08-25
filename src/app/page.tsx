@@ -10,8 +10,8 @@ import {
   BriefcaseBusiness,
   Laugh,
   Layers,
-  PartyPopper,
   UserRoundSearch,
+  Gamepad2, // NEW
 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -19,10 +19,10 @@ import { useEffect, useRef, useState } from 'react';
 
 /* ---------- quick-question data ---------- */
 const questions = {
-  Me: 'Who are you? I want to know more about you.',
-  Projects: 'What are your projects? What are you working on right now?',
-  Skills: 'What are your skills? Give me a list of your soft and hard skills.',
-  Fun: 'What’s the craziest thing you’ve ever done? What are your hobbies?',
+  Me: 'Give me a quick intro to Mousa.',
+  Projects: 'Show me your projects (AIVA, NoteBuddy, Jurassic Robot, Pet Feeder).',
+  Skills: 'List Mousa’s core AI/embedded/robotics skills.',
+  Esports: 'Tell me about your League of Legends esports background.',
   Contact: 'How can I contact you?',
 } as const;
 
@@ -30,7 +30,7 @@ const questionConfig = [
   { key: 'Me', color: '#329696', icon: Laugh },
   { key: 'Projects', color: '#3E9858', icon: BriefcaseBusiness },
   { key: 'Skills', color: '#856ED9', icon: Layers },
-  { key: 'Fun', color: '#B95F9D', icon: PartyPopper },
+  { key: 'Esports', color: '#B95F9D', icon: Gamepad2 }, // REPLACED Fun
   { key: 'Contact', color: '#C19433', icon: UserRoundSearch },
 ] as const;
 
@@ -62,13 +62,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Précharger les assets du chat en arrière-plan
+    // Preload hero/chat assets
     const img = new window.Image();
     img.src = '/landing-memojis.png';
 
-    // Précharger les vidéos aussi
     const linkWebm = document.createElement('link');
-    linkWebm.rel = 'preload'; // Note: prefetch au lieu de preload
+    linkWebm.rel = 'preload';
     linkWebm.as = 'video';
     linkWebm.href = '/final_memojis.webm';
     document.head.appendChild(linkWebm);
@@ -90,7 +89,6 @@ export default function Home() {
       {/* GitHub button */}
       <div className="absolute top-6 right-8 z-20">
         <GithubButton
-          //targetStars={68}
           animationDuration={1.5}
           label="Star"
           size={'sm'}
@@ -176,7 +174,7 @@ export default function Home() {
               aria-label="Submit question"
               className="flex items-center justify-center rounded-full bg-[#0171E3] p-2.5 text-white transition-colors hover:bg-blue-600 disabled:opacity-70 dark:bg-blue-600 dark:hover:bg-blue-700"
             >
-              <ArrowRight  className="h-5 w-5" />
+              <ArrowRight className="h-5 w-5" />
             </button>
           </div>
         </form>
