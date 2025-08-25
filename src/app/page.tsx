@@ -2,7 +2,7 @@
 
 import FluidCursor from '@/components/FluidCursor';
 import { Button } from '@/components/ui/button';
-import { GithubButton } from '@/components/ui/github-button';
+import ResumeButton from '@/components/ui/resume-button';
 import WelcomeModal from '@/components/welcome-modal';
 import { motion } from 'framer-motion';
 import {
@@ -86,13 +86,11 @@ export default function Home() {
         Mousa
       </div>
 
-      {/* GitHub button */}
+      {/* Resume button */}
       <div className="absolute top-6 right-8 z-20">
-        <GithubButton
-          animationDuration={1.5}
-          label="Star"
-          size={'sm'}
-          repoUrl="https://github.com/20mup/aiportfolio"
+        <ResumeButton
+          href="/mousa_resume.pdf"        // put your resume path here
+          subtitle="Updated Mar 2025"      // optional
         />
       </div>
 
