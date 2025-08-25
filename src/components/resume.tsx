@@ -10,7 +10,7 @@ type ResumeDetails = {
   lastUpdated: string;
   fileSize?: string; // optional, since we can’t compute on client
   previewImageSrc?: string; // optional
-  downloadUrl: string; // e.g. /resume_mousa.pdf
+  downloadUrl: string; // e.g. /mousa_resume.pdf
   viewUrl?: string; // same as downloadUrl by default
 };
 
@@ -20,16 +20,14 @@ export default function Resume() {
     description: "AI, Robotics & Embedded Systems",
     fileType: "PDF",
     lastUpdated: "Aug 2025",
-    fileSize: "1.2 MB", // update if you know it; otherwise delete this line
-    previewImageSrc: "/resume_mousa_preview.png", // remove if you don’t have one
-    downloadUrl: "/resume_mousa.pdf",
-    viewUrl: "/resume_mousa.pdf",
+    downloadUrl: "/mousa_resume.pdf",
+    viewUrl: "/mousa_resume.pdf",
   };
 
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = resumeDetails.downloadUrl;
-    link.download = resumeDetails.downloadUrl.split('/').pop() || 'resume.pdf';
+    link.download = resumeDetails.downloadUrl.split('/').pop() || 'mousa_resume.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

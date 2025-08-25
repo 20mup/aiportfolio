@@ -1,12 +1,5 @@
 'use client';
-import { useOutsideClick } from '@/hooks/use-outside-click';
-import { cn } from '@/lib/utils';
-import {
-  IconArrowNarrowLeft,
-  IconArrowNarrowRight,
-  IconX,
-} from '@tabler/icons-react';
-import { AnimatePresence, motion } from 'framer-motion';
+
 import Image, { ImageProps } from 'next/image';
 import React, {
   createContext,
@@ -15,6 +8,14 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { useOutsideClick } from '@/hooks/use-outside-click';
+import {
+  IconArrowNarrowLeft,
+  IconArrowNarrowRight,
+  IconX,
+} from '@tabler/icons-react';
 
 type Card = {
   src: string;
@@ -58,16 +59,24 @@ export const Carousel = ({
     }
   };
 
-  // Get the card width and gap based on viewport size
+  // Dynamic scroll distance = first card width + parent flex gap
   const getScrollDistance = () => {
-    // Card width (w-56 = 224px) + gap-4 (16px)
-    const cardWidth = 224;
-    const gap = 16;
-    const totalWidth = cardWidth + gap;
+    const root = carouselRef.current;
+    if (!root) return 320;
 
-    // Scroll by 2 cards on desktop, 1 on mobile
-    const cardsToScroll = 1;
-    return totalWidth * cardsToScroll;
+    const firstCardBtn = root.querySelector<HTMLElement>('button[data-card]');
+    if (!firstCardBtn) return 320;
+
+    const width = firstCardBtn.getBoundingClientRect().width;
+    // flex gap is on the parent with gap-4 (16px); read it safely
+    const parent = firstCardBtn.parentElement;
+    let gap = 16;
+    if (parent) {
+      const g = getComputedStyle(parent).gap || getComputedStyle(parent).columnGap;
+      const parsed = parseInt(g || '16', 10);
+      if (!Number.isNaN(parsed)) gap = parsed;
+    }
+    return width + gap;
   };
 
   const scrollLeft = () => {
@@ -90,19 +99,14 @@ export const Carousel = ({
 
   const handleCardClose = (index: number) => {
     if (carouselRef.current) {
-      const cardWidth = 224; // w-56 (224px)
-      const gap = isMobile() ? 16 : 16; // gap-4 (16px)
-      const scrollPosition = (cardWidth + gap) * index;
+      const distance = getScrollDistance();
+      const scrollPosition = distance * index;
       carouselRef.current.scrollTo({
         left: scrollPosition,
         behavior: 'smooth',
       });
       setCurrentIndex(index);
     }
-  };
-
-  const isMobile = () => {
-    return window && window.innerWidth < 768;
   };
 
   return (
@@ -119,29 +123,20 @@ export const Carousel = ({
             className={cn(
               'absolute right-0 z-[10] h-auto w-[5%] overflow-hidden bg-gradient-to-l'
             )}
-          ></div>
-
+          />
           <div
             className={cn(
-              'flex flex-row justify-start gap-4',
-              'mx-auto max-w-7xl' // remove max-w-4xl if you want the carousel to span the full width of its container
+              'mx-auto max-w-7xl',
+              'flex flex-row justify-start gap-4'
             )}
           >
             {items.map((item, index) => (
               <motion.div
-                initial={{
-                  opacity: 0,
-                  y: 20,
-                }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{
                   opacity: 1,
                   y: 0,
-                  transition: {
-                    duration: 0.5,
-                    delay: 0.2 * index,
-                    ease: 'easeOut',
-                    once: true,
-                  },
+                  transition: { duration: 0.5, delay: 0.2 * index, ease: 'easeOut', once: true },
                 }}
                 key={'card' + index}
                 className="rounded-3xl last:pr-[5%] md:last:pr-[33%]"
@@ -176,39 +171,30 @@ export const Card = ({
   card,
   index,
   layout = false,
+  imageOnly = false, // NEW
 }: {
   card: Card;
   index: number;
   layout?: boolean;
+  imageOnly?: boolean; // NEW
 }) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { onCardClose, currentIndex } = useContext(CarouselContext);
+  const { onCardClose } = useContext(CarouselContext);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        handleClose();
-      }
+      if (event.key === 'Escape') handleClose();
     }
-
-    if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-
+    document.body.style.overflow = open ? 'hidden' : 'auto';
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [open]);
 
-  //@ts-ignore
+  // @ts-ignore
   useOutsideClick(containerRef, () => handleClose());
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
+  const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     onCardClose(index);
@@ -216,6 +202,7 @@ export const Card = ({
 
   return (
     <>
+      {/* Modal */}
       <AnimatePresence>
         {open && (
           <div className="fixed inset-0 z-52 h-screen overflow-auto">
@@ -233,7 +220,7 @@ export const Card = ({
               layoutId={layout ? `card-${card.title}` : undefined}
               className="relative z-[60] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white font-sans dark:bg-neutral-900"
             >
-              {/* Sticky close button */}
+              {/* Close */}
               <div className="sticky top-4 z-52 flex justify-end px-8 pt-8 md:px-14 md:pt-8">
                 <button
                   className="flex h-8 w-8 items-center justify-center rounded-full bg-black/90 shadow-md dark:bg-white/90"
@@ -243,8 +230,8 @@ export const Card = ({
                 </button>
               </div>
 
-              {/* Header section with consistent padding */}
-              <div className="relative px-8 pt-2 pb-0 md:px-14">
+              {/* Header */}
+              <div className="relative px-8 pb-0 pt-2 md:px-14">
                 <div>
                   <motion.p
                     layoutId={layout ? `category-${card.title}` : undefined}
@@ -254,47 +241,72 @@ export const Card = ({
                   </motion.p>
                   <motion.p
                     layoutId={layout ? `title-${card.title}` : undefined}
-                    className="mt-4 text-2xl font-semibold text-neutral-700 md:text-5xl dark:text-white"
+                    className="mt-4 text-2xl font-semibold text-neutral-700 dark:text-white md:text-5xl"
                   >
                     {card.title}
                   </motion.p>
                 </div>
               </div>
 
-              {/* Content with consistent padding */}
-              <div className="px-8 pt-8 pb-14 md:px-14">{card.content}</div>
+              {/* Content */}
+              <div className="px-8 pb-14 pt-8 md:px-14">{card.content}</div>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
-      <motion.button
-        layoutId={layout ? `card-${card.title}` : undefined}
-        onClick={handleOpen}
-        className="relative z-10 flex h-80 w-56 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 dark:bg-neutral-900"
-      >
-        <div className="absolute inset-x-0 top-0 z-30 h-full cursor-pointer bg-gradient-to-b from-black hover:scale-110 via-transparent to-transparent" />
-        {/*<div className="absolute inset-0 z-20 cursor-pointer bg-black/20 hover:bg-black/2" />*/}
-        <div className="relative z-40 p-8">
-          <motion.p
-            layoutId={layout ? `category-${card.category}` : undefined}
-            className="text-left font-sans text-sm font-medium text-white md:text-base"
-          >
-            {card.category}
-          </motion.p>
-          <motion.p
-            layoutId={layout ? `title-${card.title}` : undefined}
-            className="max-w-xs text-left font-sans text-xl font-semibold [text-wrap:balance] text-white md:text-3xl"
-          >
-            {card.title}
-          </motion.p>
-        </div>
-        <BlurImage
-          src={card.src}
-          alt={card.title}
-          fill
-          className="absolute inset-0 z-10 object-cover"
-        />
-      </motion.button>
+
+      {/* Preview Button */}
+      {imageOnly ? (
+        // IMAGE-ONLY 16:9 PREVIEW
+        <motion.button
+          data-card
+          layoutId={layout ? `card-${card.title}` : undefined}
+          onClick={handleOpen}
+          className="relative z-10 aspect-[16/9] w-[320px] overflow-hidden rounded-3xl bg-gray-100 sm:w-[420px] dark:bg-neutral-900"
+        >
+          <BlurImage
+            src={card.src}
+            alt={card.title}
+            fill
+            className="absolute inset-0 z-10 object-cover"
+            quality={95}
+            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 33vw"
+            priority={index < 2}
+          />
+          {/* subtle hover veil */}
+          <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-200 hover:bg-black/10" />
+        </motion.button>
+      ) : (
+        // ORIGINAL STYLE (kept for compatibility)
+        <motion.button
+          data-card
+          layoutId={layout ? `card-${card.title}` : undefined}
+          onClick={handleOpen}
+          className="relative z-10 flex h-80 w-56 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 dark:bg-neutral-900"
+        >
+          <div className="absolute inset-x-0 top-0 z-30 h-full cursor-pointer bg-gradient-to-b from-black via-transparent to-transparent" />
+          <div className="relative z-40 p-8">
+            <motion.p
+              layoutId={layout ? `category-${card.category}` : undefined}
+              className="text-left font-sans text-sm font-medium text-white md:text-base"
+            >
+              {card.category}
+            </motion.p>
+            <motion.p
+              layoutId={layout ? `title-${card.title}` : undefined}
+              className="max-w-xs text-left font-sans text-xl font-semibold text-white [text-wrap:balance] md:text-3xl"
+            >
+              {card.title}
+            </motion.p>
+          </div>
+          <BlurImage
+            src={card.src}
+            alt={card.title}
+            fill
+            className="absolute inset-0 z-10 object-cover"
+          />
+        </motion.button>
+      )}
     </>
   );
 };
@@ -321,8 +333,8 @@ export const BlurImage = ({
       height={height}
       loading="lazy"
       decoding="async"
-      blurDataURL={typeof src === 'string' ? src : undefined}
-      alt={alt ? alt : 'Background of a beautiful view'}
+      // Note: don't use blurDataURL for large images unless you provide a tiny base64
+      alt={alt ? alt : 'Project preview'}
       {...rest}
     />
   );
