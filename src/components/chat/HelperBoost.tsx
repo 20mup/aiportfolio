@@ -20,10 +20,10 @@ import {
   Laugh,
   Layers,
   MailIcon,
-  PartyPopper,
   Sparkles,
   UserRoundSearch,
   UserSearch,
+  Gamepad2,              // 👈 NEW
 } from 'lucide-react';
 import { useState } from 'react';
 import { Drawer } from 'vaul';
@@ -33,32 +33,35 @@ interface HelperBoostProps {
   setInput?: (value: string) => void;
 }
 
+/* ------------------------- Quick question payloads ------------------------- */
 const questions = {
   Me: 'Who are you? I want to know more about you.',
   Projects: 'What are your projects? What are you working on right now?',
   Skills: 'What are your skills? Give me a list of your soft and hard skills.',
-  Fun: "What the craziest thing you've ever done? (mb?) What are your hobbies? ",
+  Esports:
+    "Tell me about your League of Legends esports journey (team, rank, highlights).",
   Contact:
     'How can I reach you? What kind of project would make you say "yes" immediately?',
-};
+} as const;
 
+/* ------------------------- Buttons shown above chat ------------------------ */
 const questionConfig = [
   { key: 'Me', color: '#329696', icon: Laugh },
   { key: 'Projects', color: '#3E9858', icon: BriefcaseBusiness },
   { key: 'Skills', color: '#856ED9', icon: Layers },
-  { key: 'Fun', color: '#B95F9D', icon: PartyPopper },
+  { key: 'Esports', color: '#7C3AED', icon: Gamepad2 }, // 👈 renamed + new icon
   { key: 'Contact', color: '#C19433', icon: UserRoundSearch },
-];
+] as const;
 
-// Helper drawer data
+/* --------------------------- Drawer helper content ------------------------- */
 const specialQuestions = [
-  'Mountain Bike you said?? Show me!',
+  'Show me your League of Legends rank!',
   'Who are you?',
   'Can I see your resume?',
   'What projects are you most proud of?',
   'What are your skills?',
   'How can I reach you?',
-  "What's the craziest thing you've ever done?",
+  'Tell me about your esports journey.',
 ];
 
 const questionsByCategory = [
@@ -101,14 +104,14 @@ const questionsByCategory = [
     ],
   },
   {
-    id: 'fun',
-    name: 'Fun',
-    icon: PartyPopper,
+    id: 'esports',                 // 👈 renamed section id
+    name: 'Esports',               // 👈 new title
+    icon: Gamepad2,                // 👈 gamepad icon
     questions: [
-      'Mountain Bike you said?? Show me!',
-      "What's the craziest thing you've ever done?",
-      'Mac or PC?',
-      'What are you certain about that 90% get wrong?',
+      'Tell me about your esports journey.',
+      'Show me your League of Legends rank!',
+      'Which roles/champions do you main?',
+      'What did you do with the Queen’s University esports team?',
     ],
   },
   {
@@ -121,64 +124,43 @@ const questionsByCategory = [
       'Where are you located?',
     ],
   },
-];
+] as const;
 
-// Animated Chevron component
-const AnimatedChevron = () => {
-  return (
-    <motion.div
-      animate={{
-        y: [0, -4, 0], // Subtle up and down motion
-      }}
-      transition={{
-        duration: 1.5,
-        ease: 'easeInOut',
-        repeat: Infinity,
-        repeatType: 'loop',
-      }}
-      className="text-primary mb-1.5"
-    >
-      <ChevronUp size={16} />
-    </motion.div>
-  );
-};
+/* ------------------------------ Small chevron ------------------------------ */
+const AnimatedChevron = () => (
+  <motion.div
+    animate={{ y: [0, -4, 0] }}
+    transition={{ duration: 1.5, ease: 'easeInOut', repeat: Infinity }}
+    className="text-primary mb-1.5"
+  >
+    <ChevronUp size={16} />
+  </motion.div>
+);
 
-export default function HelperBoost({
-  submitQuery,
-  setInput,
-}: HelperBoostProps) {
+export default function HelperBoost({ submitQuery, setInput }: HelperBoostProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [open, setOpen] = useState(false);
 
   const handleQuestionClick = (questionKey: string) => {
     if (submitQuery) {
-      submitQuery(questions[questionKey as keyof typeof questions]);
+      // @ts-expect-error – runtime keys are from questionConfig
+      submitQuery(questions[questionKey]);
     }
   };
 
   const handleDrawerQuestionClick = (question: string) => {
-    if (submitQuery) {
-      submitQuery(question);
-    }
+    submitQuery?.(question);
     setOpen(false);
   };
 
-  const toggleVisibility = () => {
-    setIsVisible(!isVisible);
-  };
+  const toggleVisibility = () => setIsVisible((v) => !v);
 
   return (
     <>
       <Drawer.Root open={open} onOpenChange={setOpen}>
         <div className="w-full">
           {/* Toggle Button */}
-          <div
-            className={
-              isVisible
-                ? 'mb-2 flex justify-center'
-                : 'mb-0 flex justify-center'
-            }
-          >
+          <div className={isVisible ? 'mb-2 flex justify-center' : 'mb-0 flex justify-center'}>
             <button
               onClick={toggleVisibility}
               className="flex items-center gap-1 px-3 py-1 text-xs text-gray-500 transition-colors hover:text-gray-700"
@@ -197,13 +179,10 @@ export default function HelperBoost({
             </button>
           </div>
 
-          {/* HelperBoost Content */}
+          {/* Quick buttons */}
           {isVisible && (
             <div className="w-full">
-              <div
-                className="flex w-full flex-wrap gap-1 md:gap-3"
-                style={{ justifyContent: 'safe center' }}
-              >
+              <div className="flex w-full flex-wrap gap-1 md:gap-3" style={{ justifyContent: 'safe center' }}>
                 {questionConfig.map(({ key, color, icon: Icon }) => (
                   <Button
                     key={key}
@@ -218,7 +197,7 @@ export default function HelperBoost({
                   </Button>
                 ))}
 
-                {/* Need Inspiration Button */}
+                {/* More / drawer trigger */}
                 <TooltipProvider>
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
@@ -229,12 +208,7 @@ export default function HelperBoost({
                           whileTap={{ scale: 0.98 }}
                         >
                           <div className="flex items-center gap-3 text-gray-700">
-                            <CircleEllipsis
-                              className="h-[20px] w-[18px]"
-                              //style={{ color: '#3B82F6' }}
-                              strokeWidth={2}
-                            />
-                            {/*<span className="text-sm font-medium">More</span>*/}
+                            <CircleEllipsis className="h-[20px] w-[18px]" strokeWidth={2} />
                           </div>
                         </motion.div>
                       </Drawer.Trigger>
@@ -255,10 +229,7 @@ export default function HelperBoost({
           <Drawer.Content className="fixed right-0 bottom-0 left-0 z-100 mt-24 flex h-[80%] flex-col rounded-t-[10px] bg-gray-100 outline-none lg:h-[60%]">
             <div className="flex-1 overflow-y-auto rounded-t-[10px] bg-white p-4">
               <div className="mx-auto max-w-md space-y-4">
-                <div
-                  aria-hidden
-                  className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-gray-300"
-                />
+                <div aria-hidden className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-gray-300" />
                 <div className="mx-auto w-full max-w-md">
                   <div className="space-y-8 pb-16">
                     {questionsByCategory.map((category) => (
@@ -281,7 +252,7 @@ export default function HelperBoost({
   );
 }
 
-// Component for each category section
+/* ------------------------------ Drawer pieces ------------------------------ */
 interface CategorySectionProps {
   name: string;
   Icon: React.ElementType;
@@ -289,19 +260,12 @@ interface CategorySectionProps {
   onQuestionClick: (question: string) => void;
 }
 
-function CategorySection({
-  name,
-  Icon,
-  questions,
-  onQuestionClick,
-}: CategorySectionProps) {
+function CategorySection({ name, Icon, questions, onQuestionClick }: CategorySectionProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2.5 px-1">
         <Icon className="h-5 w-5" />
-        <Drawer.Title className="text-[22px] font-medium text-gray-900">
-          {name}
-        </Drawer.Title>
+        <Drawer.Title className="text-[22px] font-medium text-gray-900">{name}</Drawer.Title>
       </div>
 
       <Separator className="my-4" />
@@ -320,7 +284,6 @@ function CategorySection({
   );
 }
 
-// Component for each question item with animated chevron
 interface QuestionItemProps {
   question: string;
   onClick: () => void;
@@ -342,34 +305,18 @@ function QuestionItem({ question, onClick, isSpecial }: QuestionItemProps) {
       onClick={onClick}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      whileHover={{
-        backgroundColor: isSpecial ? undefined : '#F0F0F2',
-      }}
-      whileTap={{
-        scale: 0.98,
-        backgroundColor: isSpecial ? undefined : '#E8E8EA',
-      }}
+      whileHover={{ backgroundColor: isSpecial ? undefined : '#F0F0F2' }}
+      whileTap={{ scale: 0.98, backgroundColor: isSpecial ? undefined : '#E8E8EA' }}
     >
       <div className="flex items-center">
         {isSpecial && <Sparkles className="mr-2 h-4 w-4 text-white" />}
-        <span className={isSpecial ? 'font-medium text-white' : ''}>
-          {question}
-        </span>
+        <span className={isSpecial ? 'font-medium text-white' : ''}>{question}</span>
       </div>
       <motion.div
         animate={{ x: isHovered ? 4 : 0 }}
-        transition={{
-          type: 'spring',
-          stiffness: 400,
-          damping: 25,
-        }}
+        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       >
-        <ChevronRight
-          className={cn(
-            'h-5 w-5 shrink-0',
-            isSpecial ? 'text-white' : 'text-primary'
-          )}
-        />
+        <ChevronRight className={cn('h-5 w-5 shrink-0', isSpecial ? 'text-white' : 'text-primary')} />
       </motion.div>
     </motion.button>
   );

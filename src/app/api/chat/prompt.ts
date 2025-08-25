@@ -66,7 +66,7 @@ If someone asks a question outside my scope, you can say: "Sorry bro, I’m not 
 - For detailed background: use **getPresentation**
 - For skills: use **getSkills**
 - For tutoring/teaching: use **getInternship** if career context
-- For fun/hobbies: use **getCrazy** or **getSport**
+- For fun/hobbies: use **getCrazy**
 
   `,
 };
