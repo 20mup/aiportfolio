@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import Image from 'next/image';
 
 // Component imports
 import ChatBottombar from '@/components/chat/chat-bottombar';
@@ -43,65 +44,28 @@ interface AvatarProps {
   isTalking: boolean;
 }
 
-// Dynamic import of Avatar component
+// Dynamic import of Avatar component (now shows MP logo)
 const Avatar = dynamic<AvatarProps>(
   () =>
-    Promise.resolve(({ hasActiveTool, videoRef, isTalking }: AvatarProps) => {
-      // This function will only execute on the client
-      const isIOS = () => {
-        // Multiple detection methods
-        const userAgent = window.navigator.userAgent;
-        const platform = window.navigator.platform;
-        const maxTouchPoints = window.navigator.maxTouchPoints || 0;
+    Promise.resolve(({ hasActiveTool }: AvatarProps) => {
+      const sizeClass = hasActiveTool ? 'h-20 w-20' : 'h-28 w-28';
 
-        // UserAgent-based check
-        const isIOSByUA =
-          //@ts-ignore
-          /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-
-        // Platform-based check
-        const isIOSByPlatform = /iPad|iPhone|iPod/.test(platform);
-
-        // iPad Pro check
-        const isIPadOS =
-          //@ts-ignore
-          platform === 'MacIntel' && maxTouchPoints > 1 && !window.MSStream;
-
-        // Safari check
-        const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
-
-        return isIOSByUA || isIOSByPlatform || isIPadOS || isSafari;
-      };
-
-      // Conditional rendering based on detection
       return (
-        <div
-          className={`flex items-center justify-center rounded-full transition-all duration-300 ${hasActiveTool ? 'h-20 w-20' : 'h-28 w-28'}`}
+        <button
+          aria-label="Home"
+          onClick={() => (window.location.href = '/')}
+          className={`flex items-center justify-center rounded-full transition-all duration-300 ${sizeClass}`}
         >
-          <div
-            className="relative cursor-pointer"
-            onClick={() => (window.location.href = '/')}
-          >
-            {isIOS() ? (
-              <img
-                src="/landing-memojis.png"
-                alt="iOS avatar"
-                className="h-full w-full scale-[1.8] object-contain"
-              />
-            ) : (
-              <video
-                ref={videoRef}
-                className="h-full w-full scale-[1.8] object-contain"
-                muted
-                playsInline
-                loop
-              >
-                <source src="/final_memojis.webm" type="video/webm" />
-                <source src="/final_memojis_ios.mp4" type="video/mp4" />
-              </video>
-            )}
-          </div>
-        </div>
+          <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-md ring-1 ring-black/10">
+            <Image
+              src="/MP-logo-blackwhite.png"
+              alt="MP"
+              width={28}
+              height={28}
+              priority
+            />
+          </span>
+        </button>
       );
     }),
   { ssr: false }

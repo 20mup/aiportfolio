@@ -63,23 +63,31 @@ interface ChatBubbleAvatarProps {
 }
 
 const ChatBubbleAvatar: React.FC<ChatBubbleAvatarProps> = ({
-  src,
-  fallback,
+  // default to your MP logo
+  src = "/MP-logo-blackwhite.png",
+  fallback = "MP",
   className,
-  width,
-  height,
+  width = 28,
+  height = 28,
 }) => (
-  <Avatar>
+  <Avatar
+    // make it a white rounded badge (override the rounded-full from Avatar)
+    className={cn(
+      "rounded-2xl bg-white ring-1 ring-black/10 p-1 size-8",
+      className
+    )}
+  >
     <AvatarImage
       src={src}
-      alt="Avatar"
-      className={className}
+      alt="MP logo"
+      className="aspect-square size-full object-contain"
       width={width}
       height={height}
     />
     <AvatarFallback>{fallback}</AvatarFallback>
   </Avatar>
 );
+
 
 // ChatBubbleMessage
 const chatBubbleMessageVariants = cva("", {
