@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/chat/chat-bubble';
 import WelcomeModal from '@/components/welcome-modal';
 import { Info } from 'lucide-react';
-import { GithubButton } from '../ui/resume-pill';
+import ResumePill from '../ui/resume-pill';
 import HelperBoost from './HelperBoost';
 
 // ClientOnly component for client-side rendering
@@ -248,12 +248,10 @@ const Chat = () => {
             </div>
           }
         />
-        <div className="">
-          <GithubButton
-            animationDuration={1.5}
-            label="Star"
-            size={'sm'}
-            repoUrl="https://github.com/toukoum/portfolio"
+        <div className="absolute top-6 right-8 z-20">
+          <ResumePill
+            href="/mousa_resume.pdf"        // put your resume path here
+            subtitle="Updated Mar 2025"      // optional
           />
         </div>
       </div>
