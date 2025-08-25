@@ -9,7 +9,7 @@ export function Contact() {
   const contactInfo = {
     name: 'Mousa Pirzada',
     email: 'mousapir@gmail.com',
-    handle: '@Raphael.Giraud',
+    handle: '@mousa-pirzada',
     socials: [
       {
         name: 'LinkedIn',
@@ -17,7 +17,7 @@ export function Contact() {
       },
       {
         name: 'Youtube',
-        url: 'https://www.youtube.com/@toukoum',
+        url: 'https://www.youtube.com/@mousapirzada4604',
       },
       {
         name: 'Instagram',

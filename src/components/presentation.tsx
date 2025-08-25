@@ -8,11 +8,11 @@ export function Presentation() {
   // Personal information
   const profile = {
     name: 'Mousa Pirzada',
-    age: 'Mechatronics & Robotics (Queen’s)',
+    age: 'Mechatronics & Robotics (Queen’s University)',
     location: 'Toronto, Canada',
     description:
       "Hey 👋\nI’m Mousa. I build voice-AI, embedded systems, and robots that actually ship.\nRecent wins: AIVA (Systems Limited), NoteBuddy (Creekwood Dental), and the Jurassic Rescue Robot.",
-    src: '/profil-mousa.png',
+    src: '/mousa.jpg',
     fallbackSrc:
       'https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=1200&auto=format&fit=crop',
   };
