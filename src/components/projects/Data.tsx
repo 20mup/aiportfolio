@@ -63,7 +63,7 @@ const PROJECT_CONTENT = [
       'Streamlit',
     ],
     date: '2023',
-    links: [{ name: 'Case Study', url: '/case-aiva.pdf' }],
+    links: [{ name: 'GitHub', url: 'https://github.com/20mup/ai-receptionist' }],
     images: [
       { src: '/aiva1.jpg', alt: 'AIVA landing screen' },
       { src: '/aiva2.png', alt: 'AIVA answering a voice query' },
@@ -83,7 +83,7 @@ const PROJECT_CONTENT = [
       'PyInstaller',
     ],
     date: '2025',
-    links: [{ name: 'Case Study', url: '/case-notebuddy.pdf' }],
+    links: [{ name: 'GitHub', url: 'https://github.com/20mup/notebuddy' }],
     images: [
       { src: '/notebuddy1.png', alt: 'NoteBuddy recording screen' },
       { src: '/notebuddy2.png', alt: 'Generated dental note' },
@@ -102,10 +102,9 @@ const PROJECT_CONTENT = [
       '3D Printing',
     ],
     date: '2024',
-    links: [{ name: 'Case Study', url: '/case-jurassic.pdf' }],
+    links: [{ name: 'GitHub', url: 'https://github.com/20mup/jurassic-rescue-robot' }],
     images: [
       { src: '/jurassic1.png', alt: 'Jurassic Rescue Robot prototype' },
-      { src: '/jurassic2.jpg', alt: 'Robot mechanism detail' },
     ],
     category: 'Robotics',
   },
@@ -122,10 +121,10 @@ const PROJECT_CONTENT = [
       'SolidWorks',
     ],
     date: '2023',
-    links: [{ name: 'Case Study', url: '/case-petfeeder.pdf' }],
+    links: [{ name: 'GitHub', url: 'https://github.com/20mup/autonomous-pet-feeder' }],
     images: [
       { src: '/petfeeder1.jpg', alt: 'Pet Feeder hardware' },
-      { src: '/petfeeder2.jpg', alt: 'Pet Feeder iOS app' },
+      { src: '/petfeeder2.png', alt: 'Pet Feeder iOS app' },
     ],
     category: 'IoT / Embedded',
   },
@@ -137,8 +136,8 @@ const PROJECT_CONTENT = [
     date: '2022',
     links: [{ name: 'GitHub', url: 'https://github.com/20mup/recipe-generator' }],
     images: [
-      { src: '/recipe1.png', alt: 'Recipe Generator input screen' },
-      { src: '/recipe2.png', alt: 'Generated recipe result' },
+      { src: '/recipe1.jpg', alt: 'Recipe Generator input screen' },
+      { src: '/recipe2.jpg', alt: 'Generated recipe result' },
     ],
     category: 'Web / Fun',
   },

@@ -20,20 +20,8 @@ export function Contact() {
         url: 'https://www.youtube.com/@mousapirzada4604',
       },
       {
-        name: 'Instagram',
-        url: 'https://www.instagram.com/raphael.giraud/',
-      },
-      {
-        name: 'Discord',
-        url: 'https://discord.com/users/toukoum',
-      },
-      {
         name: 'Github',
         url: 'https://github.com/20mup',
-      },
-      {
-        name: 'X',
-        url: 'https://x.com/toukoumcode',
       },
     ],
   };
