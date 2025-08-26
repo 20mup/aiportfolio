@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useRef,
   useState,
+  MouseEvent,
 } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -22,6 +23,7 @@ type Card = {
   title: string;
   category: string;
   content: React.ReactNode;
+  year?: string; // optional: show a year chip if provided
 };
 
 export const CarouselContext = createContext<{
@@ -68,12 +70,13 @@ export const Carousel = ({
     if (!firstCardBtn) return 320;
 
     const width = firstCardBtn.getBoundingClientRect().width;
-    // flex gap is on the parent with gap-4 (16px); read it safely
+    // read the flex gap safely
     const parent = firstCardBtn.parentElement;
     let gap = 16;
     if (parent) {
-      const g = getComputedStyle(parent).gap || getComputedStyle(parent).columnGap;
-      const parsed = parseInt(g || '16', 10);
+      const cs = getComputedStyle(parent);
+      const g = (cs.gap || cs.columnGap || '16').replace('px', '');
+      const parsed = parseInt(g, 10);
       if (!Number.isNaN(parsed)) gap = parsed;
     }
     return width + gap;
@@ -136,7 +139,12 @@ export const Carousel = ({
                 animate={{
                   opacity: 1,
                   y: 0,
-                  transition: { duration: 0.5, delay: 0.2 * index, ease: 'easeOut', once: true },
+                  transition: {
+                    duration: 0.5,
+                    delay: 0.15 * index,
+                    ease: 'easeOut',
+                    once: true,
+                  },
                 }}
                 key={'card' + index}
                 className="rounded-3xl last:pr-[5%] md:last:pr-[33%]"
@@ -146,20 +154,24 @@ export const Carousel = ({
             ))}
           </div>
         </div>
+
+        {/* arrows */}
         <div className="mr-10 flex justify-end gap-2 md:mr-20">
           <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 transition hover:bg-gray-200 disabled:opacity-50 dark:bg-neutral-800 dark:hover:bg-neutral-700"
             onClick={scrollLeft}
             disabled={!canScrollLeft}
+            aria-label="Scroll left"
           >
-            <IconArrowNarrowLeft className="h-6 w-6 text-gray-500" />
+            <IconArrowNarrowLeft className="h-6 w-6 text-gray-600 dark:text-gray-300" />
           </button>
           <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 transition hover:bg-gray-200 disabled:opacity-50 dark:bg-neutral-800 dark:hover:bg-neutral-700"
             onClick={scrollRight}
             disabled={!canScrollRight}
+            aria-label="Scroll right"
           >
-            <IconArrowNarrowRight className="h-6 w-6 text-gray-500" />
+            <IconArrowNarrowRight className="h-6 w-6 text-gray-600 dark:text-gray-300" />
           </button>
         </div>
       </div>
@@ -171,14 +183,15 @@ export const Card = ({
   card,
   index,
   layout = false,
-  imageOnly = false, // NEW
+  imageOnly = true, // default to image-first UX
 }: {
   card: Card;
   index: number;
   layout?: boolean;
-  imageOnly?: boolean; // NEW
+  imageOnly?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0, tx: 0, ty: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const { onCardClose } = useContext(CarouselContext);
 
@@ -199,6 +212,19 @@ export const Card = ({
     setOpen(false);
     onCardClose(index);
   };
+
+  // ---- magnetic tilt (lightweight) ----
+  const handleMove = (e: MouseEvent<HTMLButtonElement>) => {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;  // 0..1
+    const py = (e.clientY - rect.top) / rect.height; // 0..1
+    const ry = (px - 0.5) * 10; // rotateY
+    const rx = (0.5 - py) * 8;  // rotateX
+    const tx = (px - 0.5) * 6;  // translate
+    const ty = (py - 0.5) * 6;
+    setTilt({ rx, ry, tx, ty });
+  };
+  const handleLeave = () => setTilt({ rx: 0, ry: 0, tx: 0, ty: 0 });
 
   return (
     <>
@@ -255,15 +281,26 @@ export const Card = ({
         )}
       </AnimatePresence>
 
-      {/* Preview Button */}
+      {/* Preview Button — IMAGE-FIRST */}
       {imageOnly ? (
-        // IMAGE-ONLY 16:9 PREVIEW
         <motion.button
           data-card
           layoutId={layout ? `card-${card.title}` : undefined}
           onClick={handleOpen}
-          className="relative z-10 aspect-[16/9] w-[320px] overflow-hidden rounded-3xl bg-gray-100 sm:w-[420px] dark:bg-neutral-900"
+          onMouseMove={handleMove}
+          onMouseLeave={handleLeave}
+          className={cn(
+            'group relative z-10 aspect-[16/9] w-[320px] overflow-hidden rounded-3xl',
+            'bg-white/5 ring-1 ring-black/5 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.35)]',
+            'sm:w-[420px] dark:ring-white/5'
+          )}
+          style={{
+            transform: `perspective(800px) translate3d(${tilt.tx}px, ${tilt.ty}px, 0) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
+            transition: 'transform 120ms ease',
+          }}
+          aria-label={`${card.title} — open details`}
         >
+          {/* background image */}
           <BlurImage
             src={card.src}
             alt={card.title}
@@ -273,11 +310,33 @@ export const Card = ({
             sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 33vw"
             priority={index < 2}
           />
-          {/* subtle hover veil */}
-          <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-200 hover:bg-black/10" />
+
+          {/* glossy gradient glow */}
+          <div className="pointer-events-none absolute inset-0 z-20 bg-[radial-gradient(1200px_circle_at_50%_-40%,rgba(255,255,255,0.35),transparent_40%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+          {/* top chips */}
+          <div className="absolute left-3 top-3 z-30 flex gap-2">
+            <span className="rounded-full bg-black/70 px-2.5 py-1 text-xs font-medium text-white backdrop-blur md:text-[13px]">
+              {card.category}
+            </span>
+            {card.year ? (
+              <span className="rounded-full bg-white/80 px-2.5 py-1 text-xs font-medium text-black backdrop-blur md:text-[13px]">
+                {card.year}
+              </span>
+            ) : null}
+          </div>
+
+          {/* subtle bottom gradient + “View” hint */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-24 bg-gradient-to-t from-black/50 to-transparent" />
+          <div className="absolute bottom-3 right-3 z-40 rounded-full bg-white/85 px-3 py-1 text-xs font-medium text-black opacity-0 shadow-sm transition-all duration-200 group-hover:opacity-100">
+            View
+          </div>
+
+          {/* hover ring */}
+          <div className="pointer-events-none absolute inset-0 z-40 rounded-3xl ring-0 ring-white/0 transition-all duration-200 group-hover:ring-2 group-hover:ring-white/30" />
         </motion.button>
       ) : (
-        // ORIGINAL STYLE (kept for compatibility)
+        // Fallback: original style
         <motion.button
           data-card
           layoutId={layout ? `card-${card.title}` : undefined}
@@ -331,9 +390,7 @@ export const BlurImage = ({
       src={src}
       width={width}
       height={height}
-      loading="lazy"
       decoding="async"
-      // Note: don't use blurDataURL for large images unless you provide a tiny base64
       alt={alt ? alt : 'Project preview'}
       {...rest}
     />
