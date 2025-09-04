@@ -1,70 +1,86 @@
-![image](assets/readme-photo.png)
- 
-# World's first AI portfolio 🤖✨  
+![Mousa Pirzada AI Portfolio](assets/readme-photo.png)
 
-**Static portfolios are dead.**  
-So I built [toukoum.fr](https://toukoum.fr).
+# Mousa Pirzada — AI & Robotics Engineer 🚀  
 
-Instead of making you scroll endlessly, my portfolio adapts to *you*.  
-Ask a question — my AI avatar replies instantly.
+Hi, I’m **Mousa Pirzada**, a Mechatronics & Robotics Engineering student at Queen’s University, passionate about **AI, robotics, and building things that actually matter**.  
 
-## 👇 What can you ask?
-
-- 🧠 **Tech recruiter?** Ask about my stack & results  
-- 💻 **Dev?** Dive into my code & mindset  
-- 🧑‍🤝‍🧑 **Friend or family?** See what I’ve been working on  
+This repo contains the source code for my **AI-powered portfolio** — a new way to tell my story.  
+Instead of scrolling through static pages, you can **chat directly with my portfolio** to learn about my work, skills, and projects.  
 
 ---
 
-This is not a portfolio.  
-It’s a **conversation tailored to your curiosity**.
+## 👋 About Me
 
-➡️ **Try it now:** [https://toukoum.fr](https://toukoum.fr)  
-*What will you ask?*
+- 🎓 **4th Year Mechatronics & Robotics Engineering student** (Queen’s University, Canada)  
+- 🤖 Passion for **AI + Robotics**: I love building tools that bridge hardware, software, and intelligence.  
+- 🛠️ Project builder: From **AIVA (AI Voice Assistant at Systems Limited)** to **NoteBuddy/DentalBuddy**, an AI notetaking tool for dentists.  
+- 📚 **Private Tutor (2+ years):** Teaching calculus, linear algebra, statistics, and computer science to university students.  
+- 🌍 Entrepreneurial mindset: I’ve launched products, built startups, and worked with real clients (e.g. Creekwood Dental).  
 
-## 🚀 How to run
+---
 
-Want to run this project locally? Here's what you need:
+## 🔥 Featured Projects
+
+- **AIVA (AI Voice Assistant)** — built during my internship at Systems Limited, presented to department leadership.  
+- **DentalBuddy / NoteBuddy** — AI notetaking assistant used in real dental clinics.  
+- **Autonomous Pet Feeder** — IoT feeder with iOS app + Siri integration.  
+- **Jurassic Rescue Robot** — robotics design project for a Jurassic-themed challenge.  
+
+---
+
+## 💡 Why This Portfolio?
+
+I wanted a portfolio that reflects *how I actually think*.  
+So instead of a static website, you get a **conversation**:  
+
+- Recruiter? → Ask about my stack, results, and skills.  
+- Engineer? → Ask for design choices, code, or technical breakdowns.  
+- Curious friend? → Ask what I’m building right now.  
+
+This is the **world’s first AI portfolio** — it adapts to your curiosity.  
+
+---
+
+## 🚀 Run It Locally
+
+Want to explore or fork it?  
 
 ### Prerequisites
-- **Node.js** (v18 or higher)
-- **pnpm** package manager
-- **OpenAI API token** (for AI chat functionality)
-- **GitHub token** (for GitHub integration features)
+- Node.js (v18+)
+- pnpm package manager
+- OpenAI API key
+- GitHub token
 
 ### Setup
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd portfolio
-   ```
+```bash
+git clone <your-repo-url>
+cd portfolio
+pnpm install
+```
 
-2. **Install dependencies**
-   ```bash
-   pnpm install
-   ```
+Create a `.env` file:
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+GITHUB_TOKEN=your_github_token_here
+```
 
-3. **Environment variables**
-   Create a `.env` file in the root directory:
-   ```env
-   OPENAI_API_KEY=your_openai_api_key_here
-   GITHUB_TOKEN=your_github_token_here
-   ```
+Start dev server:
+```bash
+pnpm dev
+```
 
-4. **Run the development server**
-   ```bash
-   pnpm dev
-   ```
+Open 👉 `http://localhost:3000`
 
-5. **Open your browser**
-   Navigate to `http://localhost:3000`
+---
 
-### Getting your **tokens**
-- **OpenAI API Key**: Get it from [platform.openai.com](https://platform.openai.com/api-keys)
-- **GitHub Token**: Generate one at [github.com/settings/tokens](https://github.com/settings/personal-access-tokens) with repo access
+## 📬 Get in Touch
 
+- 📧 **Email:** mousapir@gmail.com  
+- 🔗 [LinkedIn](https://www.linkedin.com/in/mousa-pirzada/)  
+- 💻 [GitHub](https://github.com/20mup)  
+- 🎥 [YouTube](https://www.youtube.com/@mousapirzada4604)  
 
+---
 
-#### 🔖 Tags
-
-`#AIPortfolio` `#InnovationInTech` `#DigitalResume` `#JobSearch` `#TechInnovation` `#WebDevelopment` `#FutureTech`
+### 🔖 Tags
+`#AIPortfolio` `#Robotics` `#AI` `#Engineering` `#Innovation` `#WebDevelopment` `#FutureTech`
