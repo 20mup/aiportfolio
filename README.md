@@ -4,8 +4,7 @@
 
 Hi, I’m **Mousa Pirzada**, a Mechatronics & Robotics Engineering student at Queen’s University, passionate about **AI, robotics, and building things that actually matter**.  
 
-This repo contains the source code for my **AI-powered portfolio** — a new way to tell my story.  
-Instead of scrolling through static pages, you can **chat directly with my portfolio** to learn about my work, skills, and projects.  
+This repository contains the code for my **personal AI-native portfolio** — an interactive experience I designed to tell my story in a way that reflects how I think, work, and build. 
 
 ---
 
@@ -21,7 +20,7 @@ Instead of scrolling through static pages, you can **chat directly with my portf
 
 ## 🔥 Featured Projects
 
-- **AIVA (AI Voice Assistant)** — built during my internship at Systems Limited, presented to department leadership.  
+- **AIVA (AI Voice Assistant)** — built during my internship at Systems Limited, showcased to department leadership.  
 - **DentalBuddy / NoteBuddy** — AI notetaking assistant used in real dental clinics.  
 - **Autonomous Pet Feeder** — IoT feeder with iOS app + Siri integration.  
 - **Jurassic Rescue Robot** — robotics design project for a Jurassic-themed challenge.  
@@ -30,46 +29,14 @@ Instead of scrolling through static pages, you can **chat directly with my portf
 
 ## 💡 Why This Portfolio?
 
-I wanted a portfolio that reflects *how I actually think*.  
-So instead of a static website, you get a **conversation**:  
+Traditional portfolios feel static and one-dimensional. I wanted something that matches my approach to engineering — interactive, intelligent, and adaptive.
 
+Here, instead of scrolling through pages, you can have a **conversation with my portfolio**:
 - Recruiter? → Ask about my stack, results, and skills.  
 - Engineer? → Ask for design choices, code, or technical breakdowns.  
 - Curious friend? → Ask what I’m building right now.  
 
-This is the **world’s first AI portfolio** — it adapts to your curiosity.  
-
----
-
-## 🚀 Run It Locally
-
-Want to explore or fork it?  
-
-### Prerequisites
-- Node.js (v18+)
-- pnpm package manager
-- OpenAI API key
-- GitHub token
-
-### Setup
-```bash
-git clone <your-repo-url>
-cd portfolio
-pnpm install
-```
-
-Create a `.env` file:
-```env
-OPENAI_API_KEY=your_openai_api_key_here
-GITHUB_TOKEN=your_github_token_here
-```
-
-Start dev server:
-```bash
-pnpm dev
-```
-
-Open 👉 `http://localhost:3000`
+This portfolio is built for me, by me — a reflection of my work and vision.
 
 ---
 

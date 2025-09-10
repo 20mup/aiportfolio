@@ -1,7 +1,17 @@
 {
-  "name": "portfolio.com",
-  "version": "0.1.0",
+  "name": "aiportfolio",
+  "version": "1.0.0",
   "private": true,
+  "author": "Mousa Pirzada <mousapir@gmail.com>",
+  "description": "Mousa Pirzada's AI-native portfolio — an interactive, conversational portfolio showcasing AI, robotics, and engineering projects.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/20mup/aiportfolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/20mup/aiportfolio/issues"
+  },
+  "homepage": "https://mousapirzada.vercel.app",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
