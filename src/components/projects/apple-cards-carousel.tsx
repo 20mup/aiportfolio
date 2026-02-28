@@ -1,22 +1,11 @@
 'use client';
 
 import Image, { ImageProps } from 'next/image';
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  MouseEvent,
-} from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState, MouseEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useOutsideClick } from '@/hooks/use-outside-click';
-import {
-  IconArrowNarrowLeft,
-  IconArrowNarrowRight,
-  IconX,
-} from '@tabler/icons-react';
+import { IconArrowNarrowLeft, IconArrowNarrowRight, IconX } from '@tabler/icons-react';
 
 type Card = {
   src: string;
@@ -113,9 +102,7 @@ export const Carousel = ({
   };
 
   return (
-    <CarouselContext.Provider
-      value={{ onCardClose: handleCardClose, currentIndex }}
-    >
+    <CarouselContext.Provider value={{ onCardClose: handleCardClose, currentIndex }}>
       <div className="relative w-full">
         <div
           className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-10 [scrollbar-width:none]"
@@ -127,14 +114,10 @@ export const Carousel = ({
               'absolute right-0 z-[10] h-auto w-[5%] overflow-hidden bg-gradient-to-l'
             )}
           />
-          <div
-            className={cn(
-              'mx-auto max-w-7xl',
-              'flex flex-row justify-start gap-4'
-            )}
-          >
+          <div className={cn('mx-auto max-w-7xl', 'flex flex-row justify-start gap-4')}>
             {items.map((item, index) => (
               <motion.div
+                key={'card' + index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{
                   opacity: 1,
@@ -143,10 +126,8 @@ export const Carousel = ({
                     duration: 0.5,
                     delay: 0.15 * index,
                     ease: 'easeOut',
-                    once: true,
                   },
                 }}
-                key={'card' + index}
                 className="rounded-3xl last:pr-[5%] md:last:pr-[33%]"
               >
                 {item}
@@ -216,11 +197,11 @@ export const Card = ({
   // ---- magnetic tilt (lightweight) ----
   const handleMove = (e: MouseEvent<HTMLButtonElement>) => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width;  // 0..1
+    const px = (e.clientX - rect.left) / rect.width; // 0..1
     const py = (e.clientY - rect.top) / rect.height; // 0..1
     const ry = (px - 0.5) * 10; // rotateY
-    const rx = (0.5 - py) * 8;  // rotateX
-    const tx = (px - 0.5) * 6;  // translate
+    const rx = (0.5 - py) * 8; // rotateX
+    const tx = (px - 0.5) * 6; // translate
     const ty = (py - 0.5) * 6;
     setTilt({ rx, ry, tx, ty });
   };
@@ -358,34 +339,18 @@ export const Card = ({
               {card.title}
             </motion.p>
           </div>
-          <BlurImage
-            src={card.src}
-            alt={card.title}
-            fill
-            className="absolute inset-0 z-10 object-cover"
-          />
+          <BlurImage src={card.src} alt={card.title} fill className="absolute inset-0 z-10 object-cover" />
         </motion.button>
       )}
     </>
   );
 };
 
-export const BlurImage = ({
-  height,
-  width,
-  src,
-  className,
-  alt,
-  ...rest
-}: ImageProps) => {
+export const BlurImage = ({ height, width, src, className, alt, ...rest }: ImageProps) => {
   const [isLoading, setLoading] = useState(true);
   return (
     <Image
-      className={cn(
-        'transition duration-300',
-        isLoading ? 'blur-sm' : 'blur-0',
-        className
-      )}
+      className={cn('transition duration-300', isLoading ? 'blur-sm' : 'blur-0', className)}
       onLoad={() => setLoading(false)}
       src={src}
       width={width}

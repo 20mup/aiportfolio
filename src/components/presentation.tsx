@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import Image from 'next/image';
 
 export function Presentation() {
-  // Personal information
   const profile = {
     name: 'Mousa Pirzada',
     age: 'Mechatronics & Robotics (Queen’s University)',
@@ -17,10 +17,10 @@ export function Presentation() {
       'https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=1200&auto=format&fit=crop',
   };
 
-  // Use state so Next/Image can swap to a fallback on error
   const [imgSrc, setImgSrc] = useState(profile.src);
 
-  // Animation variants for text elements
+  /* ---------- Variants (properly typed) ---------- */
+
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -28,7 +28,7 @@ export function Presentation() {
       y: 0,
       transition: { duration: 0.6, ease: 'easeOut' },
     },
-  };
+  } as const satisfies Variants;
 
   const paragraphAnimation = {
     hidden: { opacity: 0, y: 20 },
@@ -37,7 +37,7 @@ export function Presentation() {
       y: 0,
       transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 },
     },
-  };
+  } as const satisfies Variants;
 
   const tags = [
     'AI & Robotics',
@@ -59,7 +59,10 @@ export function Presentation() {
             <motion.div
               initial={{ scale: 0.92, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+              transition={{
+                duration: 0.8,
+                ease: [0.19, 1, 0.22, 1] as const,
+              }}
               className="h-full w-full"
             >
               <Image

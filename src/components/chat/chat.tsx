@@ -1,4 +1,5 @@
 'use client';
+
 import { useChat } from '@ai-sdk/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
@@ -12,17 +13,14 @@ import ChatBottombar from '@/components/chat/chat-bottombar';
 import ChatLanding from '@/components/chat/chat-landing';
 import ChatMessageContent from '@/components/chat/chat-message-content';
 import { SimplifiedChatView } from '@/components/chat/simple-chat-view';
-import {
-  ChatBubble,
-  ChatBubbleMessage,
-} from '@/components/ui/chat/chat-bubble';
+import { ChatBubble, ChatBubbleMessage } from '@/components/ui/chat/chat-bubble';
 import WelcomeModal from '@/components/welcome-modal';
 import { Info } from 'lucide-react';
 import ResumePill from '../ui/resume-pill';
 import HelperBoost from './HelperBoost';
 
 // ClientOnly component for client-side rendering
-//@ts-ignore
+// @ts-ignore
 const ClientOnly = ({ children }) => {
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -57,13 +55,7 @@ const Avatar = dynamic<AvatarProps>(
           className={`flex items-center justify-center rounded-full transition-all duration-300 ${sizeClass}`}
         >
           <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-md ring-1 ring-black/10">
-            <Image
-              src="/MP-logo-blackwhite.png"
-              alt="MP"
-              width={28}
-              height={28}
-              priority
-            />
+            <Image src="/MP-logo-blackwhite.png" alt="MP" width={28} height={28} priority />
           </span>
         </button>
       );
@@ -71,6 +63,7 @@ const Avatar = dynamic<AvatarProps>(
   { ssr: false }
 );
 
+// IMPORTANT: make motion config literals so Framer Motion types accept it
 const MOTION_CONFIG = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
@@ -79,7 +72,7 @@ const MOTION_CONFIG = {
     duration: 0.3,
     ease: 'easeOut',
   },
-};
+} as const;
 
 const Chat = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -140,16 +133,12 @@ const Chat = () => {
   });
 
   const { currentAIMessage, latestUserMessage, hasActiveTool } = useMemo(() => {
-    const latestAIMessageIndex = messages.findLastIndex(
-      (m) => m.role === 'assistant'
-    );
+    const latestAIMessageIndex = messages.findLastIndex((m) => m.role === 'assistant');
     const latestUserMessageIndex = messages.findLastIndex((m) => m.role === 'user');
 
     const result = {
-      currentAIMessage:
-        latestAIMessageIndex !== -1 ? messages[latestAIMessageIndex] : null,
-      latestUserMessage:
-        latestUserMessageIndex !== -1 ? messages[latestUserMessageIndex] : null,
+      currentAIMessage: latestAIMessageIndex !== -1 ? messages[latestAIMessageIndex] : null,
+      latestUserMessage: latestUserMessageIndex !== -1 ? messages[latestUserMessageIndex] : null,
       hasActiveTool: false,
     };
 
@@ -157,8 +146,7 @@ const Chat = () => {
       result.hasActiveTool =
         result.currentAIMessage.parts?.some(
           (part) =>
-            part.type === 'tool-invocation' &&
-            part.toolInvocation?.state === 'result'
+            part.type === 'tool-invocation' && part.toolInvocation?.state === 'result'
         ) || false;
     }
 
@@ -175,12 +163,11 @@ const Chat = () => {
       m.role === 'assistant' &&
       m.parts?.some(
         (part) =>
-          part.type === 'tool-invocation' &&
-          part.toolInvocation?.state !== 'result'
+          part.type === 'tool-invocation' && part.toolInvocation?.state !== 'result'
       )
   );
 
-  //@ts-ignore
+  // @ts-ignore
   const submitQuery = (query) => {
     if (!query.trim() || isToolInProgress) return;
     setLoadingSubmit(true);
@@ -218,7 +205,7 @@ const Chat = () => {
     }
   }, [isTalking]);
 
-  //@ts-ignore
+  // @ts-ignore
   const onSubmit = (e) => {
     e.preventDefault();
     if (!input.trim() || isToolInProgress) return;
@@ -274,11 +261,7 @@ const Chat = () => {
             'linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%)',
         }}
       >
-        <div
-          className={`transition-all duration-300 ease-in-out ${
-            hasActiveTool ? 'pt-6 pb-0' : 'py-6'
-          }`}
-        >
+        <div className={`transition-all duration-300 ease-in-out ${hasActiveTool ? 'pt-6 pb-0' : 'py-6'}`}>
           <div className="flex justify-center">
             <ClientOnly>
               <Avatar hasActiveTool={hasActiveTool} videoRef={videoRef} isTalking={isTalking} />
@@ -310,11 +293,7 @@ const Chat = () => {
         <div className="flex-1 overflow-y-auto px-2" style={{ paddingTop: `${headerHeight}px` }}>
           <AnimatePresence mode="wait">
             {isEmptyState ? (
-              <motion.div
-                key="landing"
-                className="flex min-h-full items-center justify-center"
-                {...MOTION_CONFIG}
-              >
+              <motion.div key="landing" className="flex min-h-full items-center justify-center" {...MOTION_CONFIG}>
                 <ChatLanding submitQuery={submitQuery} />
               </motion.div>
             ) : currentAIMessage ? (

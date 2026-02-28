@@ -1,9 +1,6 @@
 'use client';
 
-import {
-  ChatBubble,
-  ChatBubbleMessage,
-} from '@/components/ui/chat/chat-bubble';
+import { ChatBubble, ChatBubbleMessage } from '@/components/ui/chat/chat-bubble';
 import { ChatRequestOptions } from 'ai';
 import { Message } from 'ai/react';
 import { motion } from 'framer-motion';
@@ -13,13 +10,12 @@ import ToolRenderer from './tool-renderer';
 interface SimplifiedChatViewProps {
   message: Message;
   isLoading: boolean;
-  reload: (
-    chatRequestOptions?: ChatRequestOptions
-  ) => Promise<string | null | undefined>;
+  reload: (chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>;
   addToolResult?: (args: { toolCallId: string; result: string }) => void;
   onFollowUp?: (query: string) => void;
 }
 
+// IMPORTANT: keep motion config literals so Framer Motion types accept it
 const MOTION_CONFIG = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
@@ -28,7 +24,7 @@ const MOTION_CONFIG = {
     duration: 0.3,
     ease: 'easeOut',
   },
-};
+} as const;
 
 export function SimplifiedChatView({
   message,
@@ -43,12 +39,9 @@ export function SimplifiedChatView({
     message.parts
       ?.filter(
         (part) =>
-          part.type === 'tool-invocation' &&
-          part.toolInvocation?.state === 'result'
+          part.type === 'tool-invocation' && part.toolInvocation?.state === 'result'
       )
-      .map((part) =>
-        part.type === 'tool-invocation' ? part.toolInvocation : null
-      )
+      .map((part) => (part.type === 'tool-invocation' ? part.toolInvocation : null))
       .filter(Boolean) || [];
 
   const currentTool = toolInvocations.length > 0 ? [toolInvocations[0]] : [];
@@ -68,10 +61,7 @@ export function SimplifiedChatView({
       <div className="custom-scrollbar flex h-full w-full flex-col overflow-y-auto">
         {hasTools && (
           <div className="mb-4 w-full">
-            <ToolRenderer
-              toolInvocations={currentTool}
-              messageId={message.id || 'current-msg'}
-            />
+            <ToolRenderer toolInvocations={currentTool} messageId={message.id || 'current-msg'} />
           </div>
         )}
 

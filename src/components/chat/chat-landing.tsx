@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import { Award, Code, Mail, MessageSquare } from 'lucide-react';
 import React from 'react';
 
@@ -17,23 +18,31 @@ const PROJECT_BADGES = [
 ];
 
 const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery }) => {
+  const suggested = [
+    { icon: <MessageSquare className="h-4 w-4" />, text: 'Give me your 30-second intro' },
+    { icon: <Code className="h-4 w-4" />, text: 'What’s your proudest project and why?' },
+    { icon: <Award className="h-4 w-4" />, text: 'What are you strongest at technically?' },
+    { icon: <Mail className="h-4 w-4" />, text: 'How do I reach you?' },
+  ];
 
-const suggested = [
-  { icon: <MessageSquare className="h-4 w-4" />, text: 'Give me your 30-second intro' },
-  { icon: <Code className="h-4 w-4" />, text: 'What’s your proudest project and why?' },
-  { icon: <Award className="h-4 w-4" />, text: 'What are you strongest at technically?' },
-  { icon: <Mail className="h-4 w-4" />, text: 'How do I reach you?' },
-];
-
-  // Stagger animations
+  // Stagger animations (typed)
   const container = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
-  };
+  } as const satisfies Variants;
+
   const item = {
     hidden: { opacity: 0, y: 18 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.19, 1, 0.22, 1] } },
-  };
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.45,
+        // Cubic-bezier must be a 4-number tuple (not number[])
+        ease: [0.19, 1, 0.22, 1] as const,
+      },
+    },
+  } as const satisfies Variants;
 
   return (
     <motion.div
@@ -70,9 +79,7 @@ const suggested = [
             aria-hidden
             className="pointer-events-none absolute inset-0 translate-x-[-120%] bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-70"
             style={{
-              // animate a sweep when hovered
-              maskImage:
-                'linear-gradient(to right, transparent 0%, black 50%, transparent 100%)',
+              maskImage: 'linear-gradient(to right, transparent 0%, black 50%, transparent 100%)',
               WebkitMaskImage:
                 'linear-gradient(to right, transparent 0%, black 50%, transparent 100%)',
               animation: 'shine 1.2s ease-in-out 1',
@@ -109,10 +116,7 @@ const suggested = [
       </motion.div>
 
       {/* Suggested questions */}
-      <motion.div
-        className="w-full max-w-md space-y-3"
-        variants={container}
-      >
+      <motion.div className="w-full max-w-md space-y-3" variants={container}>
         {suggested.map((q, i) => (
           <motion.button
             key={i}
@@ -133,8 +137,12 @@ const suggested = [
       {/* Local @keyframes for shine (scoped) */}
       <style jsx>{`
         @keyframes shine {
-          0% { transform: translateX(-120%); }
-          100% { transform: translateX(120%); }
+          0% {
+            transform: translateX(-120%);
+          }
+          100% {
+            transform: translateX(120%);
+          }
         }
       `}</style>
     </motion.div>

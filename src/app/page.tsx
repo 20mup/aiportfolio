@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import ResumePill from '@/components/ui/resume-pill';
 import WelcomeModal from '@/components/welcome-modal';
 import { motion } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import {
   ArrowRight,
   BriefcaseBusiness,
@@ -43,23 +44,25 @@ export default function Home() {
   const goToChat = (query: string) =>
     router.push(`/chat?query=${encodeURIComponent(query)}`);
 
-  /* hero animations (unchanged) */
+  /* hero animations (fixed typing) */
   const topElementVariants = {
     hidden: { opacity: 0, y: -60 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'ease', duration: 0.8 },
+      // "type" must be a valid Framer Motion type ("spring", "tween", etc.)
+      transition: { duration: 0.8, ease: 'easeOut' },
     },
-  };
+  } as const satisfies Variants;
+
   const bottomElementVariants = {
     hidden: { opacity: 0, y: 80 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'ease', duration: 0.8, delay: 0.2 },
+      transition: { duration: 0.8, ease: 'easeOut', delay: 0.2 },
     },
-  };
+  } as const satisfies Variants;
 
   useEffect(() => {
     // Preload hero/chat assets
@@ -81,13 +84,9 @@ export default function Home() {
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pb-10 md:pb-20">
-
       {/* Resume pill */}
       <div className="absolute top-6 right-8 z-20">
-        <ResumePill
-          href="/mousa_resume.pdf"        // put your resume path here
-          subtitle="Updated Mar 2025"      // optional
-        />
+        <ResumePill href="/mousa_resume.pdf" subtitle="Updated Mar 2025" />
       </div>
 
       <div className="absolute top-6 left-6 z-20">
@@ -122,7 +121,8 @@ export default function Home() {
           AI & robotics that matter
         </h1>
         <p className="mt-2 text-md text-gray-400">
-          AIVA (Systems Limited) • NoteBuddy (Creekwood Dental) • Autonomous Pet Feeder (Queen’s) • Jurassic Rescue Robot (Queen’s)
+          AIVA (Systems Limited) • NoteBuddy (Creekwood Dental) • Autonomous Pet Feeder (Queen’s) •
+          Jurassic Rescue Robot (Queen’s)
         </p>
       </motion.div>
 
@@ -190,6 +190,7 @@ export default function Home() {
           ))}
         </div>
       </motion.div>
+
       <FluidCursor />
     </div>
   );

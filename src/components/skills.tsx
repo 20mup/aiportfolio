@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import { Cpu, Code2, Wrench, PenTool, Users, Bot } from 'lucide-react';
 import React from 'react';
 import { cn } from '@/lib/utils';
@@ -108,34 +109,45 @@ const skillsData: {
     icon: <Users className="h-5 w-5" />,
     tier: 'Advanced',
     points: ['Ship fast, communicate clearly', 'Mentor & lead by doing'],
-    chips: ['Leadership (Residence Don)', 'Mentoring & Tutoring', 'Problem Solving', 'Communication', 'Time Management', 'Creativity'],
+    chips: [
+      'Leadership (Residence Don)',
+      'Mentoring & Tutoring',
+      'Problem Solving',
+      'Communication',
+      'Time Management',
+      'Creativity',
+    ],
     tone:
       'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950/30 dark:text-amber-300 dark:border-amber-900',
   },
 ];
 
-// Motion presets
+// Motion presets (typed)
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
-};
+} as const satisfies Variants;
 
 const itemVariants = {
   hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.19, 1, 0.22, 1] } },
-};
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: [0.19, 1, 0.22, 1] as const },
+  },
+} as const satisfies Variants;
 
 const chipVariants = {
   hidden: { opacity: 0, scale: 0.95 },
   visible: { opacity: 1, scale: 1, transition: { duration: 0.25, ease: 'easeOut' } },
-};
+} as const satisfies Variants;
 
 export default function Skills() {
   return (
     <motion.div
       initial={{ scale: 0.98, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+      transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] as const }}
       className="mx-auto w-full max-w-5xl"
     >
       <Card className="w-full border-none px-0 pb-12 shadow-none">
@@ -149,8 +161,12 @@ export default function Skills() {
 
         <CardContent className="px-0">
           <motion.div className="space-y-8" variants={containerVariants} initial="hidden" animate="visible">
-            {skillsData.map((section, i) => (
-              <motion.div key={section.category} variants={itemVariants} className="rounded-2xl border border-neutral-200/60 p-4 dark:border-neutral-800">
+            {skillsData.map((section) => (
+              <motion.div
+                key={section.category}
+                variants={itemVariants}
+                className="rounded-2xl border border-neutral-200/60 p-4 dark:border-neutral-800"
+              >
                 {/* Header row */}
                 <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                   <div className="flex items-center gap-2">
@@ -166,7 +182,9 @@ export default function Skills() {
                 {section.points && (
                   <ul className="mt-3 space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
                     {section.points.map((p) => (
-                      <li key={p} className="leading-relaxed">• {p}</li>
+                      <li key={p} className="leading-relaxed">
+                        • {p}
+                      </li>
                     ))}
                   </ul>
                 )}
