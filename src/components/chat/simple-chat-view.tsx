@@ -1,29 +1,38 @@
 'use client';
 
-import { ChatBubble, ChatBubbleMessage } from '@/components/ui/chat/chat-bubble';
+import {
+  ChatBubble,
+  ChatBubbleMessage,
+} from '@/components/ui/chat/chat-bubble';
 import { ChatRequestOptions } from 'ai';
 import { Message } from 'ai/react';
 import { motion } from 'framer-motion';
+import type { Transition } from 'framer-motion';
 import ChatMessageContent from './chat-message-content';
 import ToolRenderer from './tool-renderer';
 
 interface SimplifiedChatViewProps {
   message: Message;
   isLoading: boolean;
-  reload: (chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>;
+  reload: (
+    chatRequestOptions?: ChatRequestOptions
+  ) => Promise<string | null | undefined>;
   addToolResult?: (args: { toolCallId: string; result: string }) => void;
   onFollowUp?: (query: string) => void;
+
+  /** ✅ NEW: lets Chat.tsx decide if the chips should show */
+  showFollowUps?: boolean;
 }
 
-// IMPORTANT: keep motion config literals so Framer Motion types accept it
+// ✅ Typed easing (cubic-bezier) instead of "easeOut" string
+const EASE_OUT: [number, number, number, number] = [0.19, 1, 0.22, 1];
+const MOTION_TRANSITION: Transition = { duration: 0.3, ease: EASE_OUT };
+
 const MOTION_CONFIG = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: 20 },
-  transition: {
-    duration: 0.3,
-    ease: 'easeOut',
-  },
+  transition: MOTION_TRANSITION,
 } as const;
 
 export function SimplifiedChatView({
@@ -32,6 +41,7 @@ export function SimplifiedChatView({
   reload,
   addToolResult,
   onFollowUp,
+  showFollowUps = true,
 }: SimplifiedChatViewProps) {
   if (message.role !== 'assistant') return null;
 
@@ -39,9 +49,12 @@ export function SimplifiedChatView({
     message.parts
       ?.filter(
         (part) =>
-          part.type === 'tool-invocation' && part.toolInvocation?.state === 'result'
+          part.type === 'tool-invocation' &&
+          part.toolInvocation?.state === 'result'
       )
-      .map((part) => (part.type === 'tool-invocation' ? part.toolInvocation : null))
+      .map((part) =>
+        part.type === 'tool-invocation' ? part.toolInvocation : null
+      )
       .filter(Boolean) || [];
 
   const currentTool = toolInvocations.length > 0 ? [toolInvocations[0]] : [];
@@ -49,6 +62,7 @@ export function SimplifiedChatView({
   const hasTextContent = message.content.trim().length > 0;
   const hasTools = currentTool.length > 0;
 
+  // ✅ Better follow-ups (more recruiter-friendly)
   const followUps = [
     'Give me the 30-second version',
     'Go deeper on the technical architecture',
@@ -61,7 +75,10 @@ export function SimplifiedChatView({
       <div className="custom-scrollbar flex h-full w-full flex-col overflow-y-auto">
         {hasTools && (
           <div className="mb-4 w-full">
-            <ToolRenderer toolInvocations={currentTool} messageId={message.id || 'current-msg'} />
+            <ToolRenderer
+              toolInvocations={currentTool}
+              messageId={message.id || 'current-msg'}
+            />
           </div>
         )}
 
@@ -80,8 +97,8 @@ export function SimplifiedChatView({
               </ChatBubbleMessage>
             </ChatBubble>
 
-            {/* Follow-up chips */}
-            {!isLoading && onFollowUp && (
+            {/* ✅ Follow-up chips (ONLY when allowed + not loading) */}
+            {!isLoading && onFollowUp && showFollowUps && (
               <div className="mt-3 flex flex-wrap gap-2">
                 {followUps.map((q) => (
                   <button

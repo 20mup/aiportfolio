@@ -231,7 +231,7 @@ const Chat = () => {
   return (
     <div className="relative h-screen overflow-hidden">
       {/* ✅ Top-right controls */}
-      <div className="absolute top-6 right-8 z-50 flex items-center gap-2">
+      <div className="fixed top-6 right-8 z-[80] flex items-center gap-2 rounded-2xl bg-white/80 p-1 backdrop-blur-md dark:bg-neutral-950/70">
         <WelcomeModal
           trigger={
             <div className="hover:bg-accent cursor-pointer rounded-2xl px-3 py-1.5">
@@ -305,6 +305,7 @@ const Chat = () => {
                   addToolResult={addToolResult}
                   // ✅ Follow-up chips (only works if you updated simple-chat-view.tsx)
                   onFollowUp={submitQuery}
+                  showFollowUps={mode === 'recruiter'}
                 />
               </div>
             ) : (
