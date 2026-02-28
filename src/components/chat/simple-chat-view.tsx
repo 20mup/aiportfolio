@@ -17,6 +17,7 @@ interface SimplifiedChatViewProps {
     chatRequestOptions?: ChatRequestOptions
   ) => Promise<string | null | undefined>;
   addToolResult?: (args: { toolCallId: string; result: string }) => void;
+  onFollowUp?: (query: string) => void;
 }
 
 const MOTION_CONFIG = {
@@ -34,10 +35,10 @@ export function SimplifiedChatView({
   isLoading,
   reload,
   addToolResult,
+  onFollowUp,
 }: SimplifiedChatViewProps) {
   if (message.role !== 'assistant') return null;
 
-  // Extract tool invocations that are in "result" state
   const toolInvocations =
     message.parts
       ?.filter(
@@ -50,19 +51,21 @@ export function SimplifiedChatView({
       )
       .filter(Boolean) || [];
 
-  // Only display the first tool (if any)
   const currentTool = toolInvocations.length > 0 ? [toolInvocations[0]] : [];
 
   const hasTextContent = message.content.trim().length > 0;
   const hasTools = currentTool.length > 0;
 
-  console.log('currentTool', currentTool);
+  const followUps = [
+    'Give me the 30-second version',
+    'Go deeper on the technical architecture',
+    'What was the hardest part / what broke?',
+    'What would you improve if you rebuilt it today?',
+  ];
 
   return (
     <motion.div {...MOTION_CONFIG} className="flex h-full w-full flex-col px-4">
-      {/* Single scrollable container for both tool and text content */}
       <div className="custom-scrollbar flex h-full w-full flex-col overflow-y-auto">
-        {/* Tool invocation result - displayed at the top */}
         {hasTools && (
           <div className="mb-4 w-full">
             <ToolRenderer
@@ -72,7 +75,6 @@ export function SimplifiedChatView({
           </div>
         )}
 
-        {/* Text content */}
         {hasTextContent && (
           <div className="w-full">
             <ChatBubble variant="received" className="w-full">
@@ -87,11 +89,26 @@ export function SimplifiedChatView({
                 />
               </ChatBubbleMessage>
             </ChatBubble>
+
+            {/* Follow-up chips */}
+            {!isLoading && onFollowUp && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {followUps.map((q) => (
+                  <button
+                    key={q}
+                    type="button"
+                    onClick={() => onFollowUp(q)}
+                    className="rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs text-neutral-800 shadow-sm transition hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
-        {/* Add some padding at the bottom for better scrolling experience */}
-        <div className="pb-4"></div>
+        <div className="pb-4" />
       </div>
     </motion.div>
   );

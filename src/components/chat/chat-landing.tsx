@@ -17,13 +17,13 @@ const PROJECT_BADGES = [
 ];
 
 const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery }) => {
-  // Suggested questions (kept, slightly re-styled)
-  const suggested = [
-    { icon: <MessageSquare className="h-4 w-4" />, text: 'Who are you?' },
-    { icon: <Code className="h-4 w-4" />, text: 'What projects have you worked on?' },
-    { icon: <Award className="h-4 w-4" />, text: 'What are your skills?' },
-    { icon: <Mail className="h-4 w-4" />, text: 'How can I contact you?' },
-  ];
+
+const suggested = [
+  { icon: <MessageSquare className="h-4 w-4" />, text: 'Give me your 30-second intro' },
+  { icon: <Code className="h-4 w-4" />, text: 'What’s your proudest project and why?' },
+  { icon: <Award className="h-4 w-4" />, text: 'What are you strongest at technically?' },
+  { icon: <Mail className="h-4 w-4" />, text: 'How do I reach you?' },
+];
 
   // Stagger animations
   const container = {
@@ -63,7 +63,7 @@ const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery }) => {
         {/* Gradient headline with shine-on-hover */}
         <div className="group relative">
           <h2 className="mb-2 bg-gradient-to-r from-black via-zinc-700 to-zinc-500/90 bg-clip-text text-2xl font-semibold text-transparent dark:from-white dark:via-zinc-300 dark:to-zinc-400">
-            I’m Mousa’s digital twin
+            Talk to me 👋
           </h2>
           {/* shine sweep */}
           <span
@@ -81,7 +81,7 @@ const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery }) => {
         </div>
 
         <p className="text-muted-foreground mx-auto max-w-md">
-          The first portfolio that fits <span className="font-medium">your</span> needs.
+          Ask me about my projects, how I build things, or what I’m looking for next.
         </p>
 
         {/* Project badges (marquee on mobile, wrap on desktop) */}

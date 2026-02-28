@@ -89,19 +89,23 @@ const Chat = () => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [isTalking, setIsTalking] = useState(false);
 
+  // ✅ NEW: recruiter/casual mode
+  const [mode, setMode] = useState<'casual' | 'recruiter'>('casual');
+
   const {
     messages,
     input,
     handleInputChange,
-    handleSubmit,
     isLoading,
     stop,
-    setMessages,
     setInput,
     reload,
     addToolResult,
     append,
   } = useChat({
+    // ✅ NEW: send mode to API
+    body: { mode },
+
     onResponse: (response) => {
       if (response) {
         setLoadingSubmit(false);
@@ -139,9 +143,7 @@ const Chat = () => {
     const latestAIMessageIndex = messages.findLastIndex(
       (m) => m.role === 'assistant'
     );
-    const latestUserMessageIndex = messages.findLastIndex(
-      (m) => m.role === 'user'
-    );
+    const latestUserMessageIndex = messages.findLastIndex((m) => m.role === 'user');
 
     const result = {
       currentAIMessage:
@@ -160,6 +162,7 @@ const Chat = () => {
         ) || false;
     }
 
+    // If assistant hasn't responded to the latest user msg yet, don't show assistant msg
     if (latestAIMessageIndex < latestUserMessageIndex) {
       result.currentAIMessage = null;
     }
@@ -200,6 +203,7 @@ const Chat = () => {
       setInput('');
       submitQuery(initialQuery);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialQuery, autoSubmitted]);
 
   useEffect(() => {
@@ -232,15 +236,15 @@ const Chat = () => {
   };
 
   // Check if this is the initial empty state (no messages)
-  const isEmptyState =
-    !currentAIMessage && !latestUserMessage && !loadingSubmit;
+  const isEmptyState = !currentAIMessage && !latestUserMessage && !loadingSubmit;
 
   // Calculate header height based on hasActiveTool
   const headerHeight = hasActiveTool ? 100 : 180;
 
   return (
     <div className="relative h-screen overflow-hidden">
-      <div className="absolute top-6 right-8 z-51 flex flex-col-reverse items-center justify-center gap-1 md:flex-row">
+      {/* ✅ Top-right controls */}
+      <div className="absolute top-6 right-8 z-50 flex items-center gap-2">
         <WelcomeModal
           trigger={
             <div className="hover:bg-accent cursor-pointer rounded-2xl px-3 py-1.5">
@@ -248,12 +252,18 @@ const Chat = () => {
             </div>
           }
         />
-        <div className="absolute top-6 right-8 z-20">
-          <ResumePill
-            href="/mousa_resume.pdf"        // put your resume path here
-            subtitle="Updated Mar 2025"      // optional
-          />
-        </div>
+
+        {/* ✅ Recruiter/Casual toggle */}
+        <button
+          type="button"
+          onClick={() => setMode((m) => (m === 'casual' ? 'recruiter' : 'casual'))}
+          className="hover:bg-accent cursor-pointer rounded-2xl border border-neutral-200 bg-white px-3 py-1.5 text-sm shadow-sm transition dark:border-neutral-800 dark:bg-neutral-900"
+          title="Toggle recruiter mode"
+        >
+          {mode === 'recruiter' ? 'Recruiter Mode' : 'Casual Mode'}
+        </button>
+
+        <ResumePill href="/mousa_resume.pdf" subtitle="Updated Mar 2025" />
       </div>
 
       {/* Fixed Avatar Header with Gradient */}
@@ -265,24 +275,19 @@ const Chat = () => {
         }}
       >
         <div
-          className={`transition-all duration-300 ease-in-out ${hasActiveTool ? 'pt-6 pb-0' : 'py-6'}`}
+          className={`transition-all duration-300 ease-in-out ${
+            hasActiveTool ? 'pt-6 pb-0' : 'py-6'
+          }`}
         >
           <div className="flex justify-center">
             <ClientOnly>
-              <Avatar
-                hasActiveTool={hasActiveTool}
-                videoRef={videoRef}
-                isTalking={isTalking}
-              />
+              <Avatar hasActiveTool={hasActiveTool} videoRef={videoRef} isTalking={isTalking} />
             </ClientOnly>
           </div>
 
           <AnimatePresence>
             {latestUserMessage && !currentAIMessage && (
-              <motion.div
-                {...MOTION_CONFIG}
-                className="mx-auto flex max-w-3xl px-4"
-              >
+              <motion.div {...MOTION_CONFIG} className="mx-auto flex max-w-3xl px-4">
                 <ChatBubble variant="sent">
                   <ChatBubbleMessage>
                     <ChatMessageContent
@@ -302,10 +307,7 @@ const Chat = () => {
       {/* Main Content Area */}
       <div className="container mx-auto flex h-full max-w-3xl flex-col">
         {/* Scrollable Chat Content */}
-        <div
-          className="flex-1 overflow-y-auto px-2"
-          style={{ paddingTop: `${headerHeight}px` }}
-        >
+        <div className="flex-1 overflow-y-auto px-2" style={{ paddingTop: `${headerHeight}px` }}>
           <AnimatePresence mode="wait">
             {isEmptyState ? (
               <motion.div
@@ -322,15 +324,13 @@ const Chat = () => {
                   isLoading={isLoading}
                   reload={reload}
                   addToolResult={addToolResult}
+                  // ✅ Follow-up chips (only works if you updated simple-chat-view.tsx)
+                  onFollowUp={submitQuery}
                 />
               </div>
             ) : (
               loadingSubmit && (
-                <motion.div
-                  key="loading"
-                  {...MOTION_CONFIG}
-                  className="px-4 pt-18"
-                >
+                <motion.div key="loading" {...MOTION_CONFIG} className="px-4 pt-18">
                   <ChatBubble variant="received">
                     <ChatBubbleMessage isLoading />
                   </ChatBubble>
@@ -354,6 +354,7 @@ const Chat = () => {
             />
           </div>
         </div>
+
         <a
           href="https://github.com/20mup"
           target="_blank"
