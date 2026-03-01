@@ -40,9 +40,7 @@ const CodeBlock = ({ content }: { content: string }) => {
       className="my-4 w-full overflow-hidden rounded-md"
     >
       <div className="bg-secondary text-secondary-foreground flex items-center justify-between rounded-t-md border-b px-4 py-1">
-        <span className="text-xs">
-          {language !== 'text' ? language : 'Code'}
-        </span>
+        <span className="text-xs">{language !== 'text' ? language : 'Code'}</span>
         <CollapsibleTrigger className="hover:bg-secondary/80 rounded p-1">
           {isOpen ? (
             <ChevronUp className="h-4 w-4" />
@@ -71,10 +69,7 @@ const CodeBlock = ({ content }: { content: string }) => {
   );
 };
 
-export default function ChatMessageContent({
-  message,
-}: ChatMessageContentProps) {
-  // Only handle text parts
+export default function ChatMessageContent({ message }: ChatMessageContentProps) {
   const renderContent = () => {
     return message.parts?.map((part, partIndex) => {
       if (part.type !== 'text' || !part.text) return null;
@@ -86,23 +81,37 @@ export default function ChatMessageContent({
         <div key={partIndex} className="w-full space-y-4">
           {contentParts.map((content, i) =>
             i % 2 === 0 ? (
-              // Regular text content
-              <div key={`text-${i}`} className="prose dark:prose-invert w-full">
+              <div
+                key={`text-${i}`}
+                className="
+                  prose prose-neutral dark:prose-invert w-full max-w-none
+                  prose-p:my-2
+                  prose-ol:my-2 prose-ul:my-2
+                  prose-li:my-1
+                  prose-li:leading-relaxed
+                  prose-li:p:my-0
+                "
+              >
                 <Markdown
                   remarkPlugins={[remarkGfm]}
                   components={{
-                    p: ({ children }) => (
-                      <p className="break-words whitespace-pre-wrap">
-                        {children}
-                      </p>
-                    ),
+                    // IMPORTANT: do NOT use whitespace-pre-wrap on <p>
+                    p: ({ children }) => <p className="break-words">{children}</p>,
+
                     ul: ({ children }) => (
-                      <ul className="my-4 list-disc pl-6">{children}</ul>
+                      <ul className="my-2 list-disc pl-6">{children}</ul>
                     ),
                     ol: ({ children }) => (
-                      <ol className="my-4 list-decimal pl-6">{children}</ol>
+                      <ol className="my-2 list-decimal pl-6">{children}</ol>
                     ),
+
+                    // Ensure list items don’t introduce extra spacing
                     li: ({ children }) => <li className="my-1">{children}</li>,
+
+                    // If markdown renders paragraphs inside li, keep them tight
+                    // (react-markdown sometimes nests p inside li)
+                    // This catches that case explicitly.
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     a: ({ href, children }) => (
                       <a
                         href={href}
@@ -119,7 +128,6 @@ export default function ChatMessageContent({
                 </Markdown>
               </div>
             ) : (
-              // Code block content
               <CodeBlock key={`code-${i}`} content={content} />
             )
           )}

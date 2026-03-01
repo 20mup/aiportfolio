@@ -21,7 +21,7 @@ import { useEffect, useRef, useState } from 'react';
 /* ---------- quick-question data ---------- */
 const questions = {
   Me: 'Give me a quick intro to Mousa.',
-  Projects: 'Show me your projects (AIVA, NoteBuddy, Jurassic Robot, Pet Feeder).',
+  Projects: 'Show me your projects (AIVA, NoteBuddy, Jurassic Robot, Pet Feeder, Pantry Recipes).',
   Skills: 'List Mousa’s core AI/embedded/robotics skills.',
   Esports: 'Tell me about your League of Legends esports background.',
   Contact: 'How can I contact you?',
